@@ -1,12 +1,32 @@
 import pandas as pd
+import numpy as np
 
 data = [['Google', 10], ['Runoob', 12], ['Wiki', 13]]
-df = pd.DataFrame(data, index=['net', 'net1', 'net2'], columns=['Site', 'Age'], dtype=str)
-print(df)
-print('根据行索引读取数据：\n')
-print(df.loc['net'])
-print('根据列读取数据：\n')
-print(df['Site'])
-print(df['Age'][0])
+df = pd.DataFrame(data, index=['net', 'net1', 'net2'], columns=['Site', 'Age'])
+# df.loc['net4'] = ['Facebook', 15]
+# df['calculate'] = np.where(df['Age'] > 12, 1, 0)
+# df['diff'] = df['Age'].diff()
+# print(df)
+# print('根据行索引读取数据：\n')
+# print(df.loc['net'])
+# print('根据列读取数据：\n')
+# print(df['Site'])
+# print(df['Age'][0])
+#
+# print(df.loc['net1'][1])
 
-print(df.loc['net1'][1])
+# se = df['Site']
+# print(se)
+# print(se.reindex(se.index[::-1]))
+
+print(df.reindex(df.index[::-1]))
+
+
+
+
+
+
+
+
+
+
