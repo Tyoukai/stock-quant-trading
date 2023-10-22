@@ -19,7 +19,11 @@ df = pd.DataFrame(data, index=['net', 'net1', 'net2'], columns=['Site', 'Age'])
 # print(se)
 # print(se.reindex(se.index[::-1]))
 
-print(df.reindex(df.index[::-1]))
+# print(df.reindex(df.index[::-1]))
+
+se = pd.Series([1, 2, 3, 4])
+print(se.cumsum())
+
 
 
 
