@@ -34,8 +34,8 @@ df['cash'] = init_cash - (df['order'].diff() * df['price']).cumsum()
 df['total'] = df['stock'] + df['cash']
 
 print('=============')
-print(df)
 df.fillna(0.0)
+print(df)
 
 fig = plt.figure(1, (10, 8))
 ax = fig.add_subplot(111)
@@ -46,7 +46,7 @@ ax.set_ylim([0, 21001])
 
 ax.set_xticks(['20230901', '20230908', '20230915', '20230922', '20230929'])
 ax.set_yticks(np.linspace(0, 21000, 10))
-ax.legend(loc=1)
+ax.legend(loc=3)
 plt.show()
 
 
