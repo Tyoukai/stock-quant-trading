@@ -24,10 +24,19 @@ df = pd.DataFrame(data, columns=['Site', 'Age'])
 # se = pd.Series([1, 2, 3, 4])
 # print(se.cumsum())
 
-print(df)
-df = df.assign(money=pd.Series([100, 200, 300], index=df.index))
-print('===========================')
-print(df)
+# print(df)
+# df = df.assign(money=pd.Series([100, 200, 300], index=df.index))
+# print('===========================')
+# print(df)
+
+se = pd.Series(np.arange(10))
+print(se)
+
+print(se.rolling(3, closed='right').mean())
+
+print(se.rolling(4, closed='left').mean())
+
+print(se.rolling(3, closed='both').mean())
 
 
 

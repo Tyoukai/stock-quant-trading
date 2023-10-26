@@ -39,8 +39,8 @@ print(df)
 
 fig = plt.figure(1, (10, 8))
 ax = fig.add_subplot(111)
-ax.plot(df['date'], df['total'], 'r-', 'total')
-ax.plot(df['date'], df['order'].cumsum() * df['price'], 'b--', 'stock')
+ax.plot(df['date'], df['total'], 'r-', lable='total')
+ax.plot(df['date'], df['order'].cumsum() * df['price'], 'b--', label='stock')
 
 ax.set_ylim([0, 21001])
 

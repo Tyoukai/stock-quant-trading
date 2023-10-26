@@ -14,15 +14,23 @@ df = pd.DataFrame({
 
 )
 
+# print(df)
+
+# fig = plt.figure(1, (15, 10))
+# ax = fig.add_subplot(111)
+#
+# ax.plot(df['trade_date'], df['close'], 'b-', label='close')
+# ax.plot(df['trade_date'], df['avg_10'], 'r--', label='avg_10')
+#
+# ax.set_ylim([8, 12])
+# ax.set_xticks(['20230901', '20230911', '20230919', '20230927'])
+# ax.legend(loc=3)
+# fig.show()
+
+df['avg_5'] = df['close'].rolling(5, closed='left').mean()
+df['avg_10'] = df['close'].rolling(10, closed='left').mean()
+# df = df.loc[9:0]
+
+
 print(df)
 
-fig = plt.figure(1, (15, 10))
-ax = fig.add_subplot(111)
-
-ax.plot(df['trade_date'], df['close'], 'b-', label='close')
-ax.plot(df['trade_date'], df['avg_10'], 'r--', label='avg_10')
-
-ax.set_ylim([8, 12])
-ax.set_xticks(['20230901', '20230911', '20230919', '20230927'])
-ax.legend(loc=3)
-fig.show()
