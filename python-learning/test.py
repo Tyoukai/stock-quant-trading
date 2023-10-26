@@ -2,19 +2,27 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-data = [[78, 80, 79, 81, 91, 95, 96], [70, 80, 81, 82, 75, 90, 89]]
-df = pd.DataFrame(data)
+df = pd.DataFrame({
+    'trade_date': ['20230901', '20230904', '20230905', '20230906', '20230907', '20230908', '20230911', '20230912', '20230913'
+                  , '20230914', '20230915', '20230918', '20230919', '20230920', '20230921', '20230922', '20230925', '20230926'
+                  , '20230927', '20230928'],
+    'close': [11.32, 11.56, 11.39, 11.43, 11.33, 11.27, 11.34, 11.28, 11.25, 11.29, 11.22, 11.23, 11.21, 11.15, 11.05
+              , 11.24, 11.22, 11.16, 11.17, 11.20],
+    'avg_10': [11.295, 11.271, 11.295, 11.297, 11.315, 11.335, 11.339, 11.321, 11.318, 11.330, 11.346, 11.336, 11.303
+               , 11.285, 11.257, 11.229, 11.226, 11.214, 11.202, 11.194]},
+    index=np.flip(np.arange(0, 20, 1), 0)
 
-fig = plt.figure(1, (6, 4))
+)
+
+print(df)
+
+fig = plt.figure(1, (15, 10))
 ax = fig.add_subplot(111)
 
-x = np.arange(1, 8)
-ax.plot(x, df.loc[0], 'r-.d', label='apple')
-ax.plot(x, df.loc[1], 'c-d', label='banana')
-ax.set_xlim([1, 7.1])
-ax.set_ylim([40, 100])
+ax.plot(df['trade_date'], df['close'], 'b-', label='close')
+ax.plot(df['trade_date'], df['avg_10'], 'r--', label='avg_10')
 
-ax.set_xticklabels(["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"], fontproperties="SimHei", fontsize=12, rotation=10)
-ax.set_yticklabels(["50kg", "60kg", "70kg", "80kg", "90kg", "100kg"])
-
-plt.show()
+ax.set_ylim([8, 12])
+ax.set_xticks(['20230901', '20230911', '20230919', '20230927'])
+ax.legend(loc=3)
+fig.show()

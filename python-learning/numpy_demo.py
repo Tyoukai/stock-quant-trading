@@ -16,6 +16,6 @@ print(np.mean(metric, axis=0))
 # 计算每一行的平均值
 print(np.mean(metric, axis=1))
 
-
+print(np.flip(np.arange(0, 20, 1), 0))
 
 
