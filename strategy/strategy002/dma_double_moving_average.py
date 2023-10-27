@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import tushare as ts
+import numpy as np
 
 ts.set_token('99c90b0a4e59eb836aebcfd89e6d0aa62b77212fabaa9c7a5c81e888')
 pro = ts.pro_api()
@@ -11,6 +12,8 @@ calculate_df['avg_5'] = calculate_df['close'].rolling(5, closed='left').mean()
 calculate_df['avg_10'] = calculate_df['close'].rolling(10, closed='left').mean()
 
 calculate_df = calculate_df.loc[19:0]
+calculate_df['single'] = np.where(calculate_df['avg_5'] > calculate_df['avg_10'], 1, 0)
+
 
 print(calculate_df)
 
