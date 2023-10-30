@@ -3,6 +3,19 @@ import numpy as np
 
 data = [['Google', 10], ['Runoob', 12], ['Wiki', 13]]
 df = pd.DataFrame(data, columns=['Site', 'Age'])
+
+
+df_buy = pd.DataFrame({
+    'date': [],
+    'close': []
+})
+df_sale = pd.DataFrame({
+    'date': [],
+    'close': []
+})
+
+df_buy['date'].at['0'] = '1'
+print(df_buy['date'])
 # df.loc['net4'] = ['Facebook', 15]
 # df['calculate'] = np.where(df['Age'] > 12, 1, 0)
 # df['diff'] = df['Age'].diff()
@@ -29,14 +42,14 @@ df = pd.DataFrame(data, columns=['Site', 'Age'])
 # print('===========================')
 # print(df)
 
-se = pd.Series(np.arange(10))
-print(se)
-
-print(se.rolling(3, closed='right').mean())
-
-print(se.rolling(4, closed='left').mean())
-
-print(se.rolling(3, closed='both').mean())
+# se = pd.Series(np.arange(10))
+# print(se)
+#
+# print(se.rolling(3, closed='right').mean())
+#
+# print(se.rolling(4, closed='left').mean())
+#
+# print(se.rolling(3, closed='both').mean())
 
 
 
