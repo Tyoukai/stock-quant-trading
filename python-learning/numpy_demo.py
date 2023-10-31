@@ -18,4 +18,5 @@ print(np.mean(metric, axis=1))
 
 print(np.flip(np.arange(0, 20, 1), 0))
 
+print(np.arange(1, 7, 1))
 
