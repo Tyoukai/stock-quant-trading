@@ -24,5 +24,5 @@ df4 = df[['A', 'D']][(df['B'] > 0) & (df['C'] < 0)]
 # df4 = df[['A', 'D']][(df['B']>0)&(df['C']<0)]
 print(df4)
 
-
+print(pd.date_range('20231001', periods=10))
 
