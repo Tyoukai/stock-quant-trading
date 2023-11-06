@@ -5,17 +5,17 @@ data = [['Google', 10], ['Runoob', 12], ['Wiki', 13]]
 df = pd.DataFrame(data, columns=['Site', 'Age'])
 
 
-df_buy = pd.DataFrame({
-    'date': [],
-    'close': []
-})
-df_sale = pd.DataFrame({
-    'date': [],
-    'close': []
-})
+# df_buy = pd.DataFrame({
+#     'date': [],
+#     'close': []
+# })
+# df_sale = pd.DataFrame({
+#     'date': [],
+#     'close': []
+# })
 
-df_buy['date'].at['0'] = '1'
-print(df_buy['date'])
+# df_buy['date'].at['0'] = '1'
+# print(df_buy['date'])
 # df.loc['net4'] = ['Facebook', 15]
 # df['calculate'] = np.where(df['Age'] > 12, 1, 0)
 # df['diff'] = df['Age'].diff()
@@ -52,8 +52,12 @@ print(df_buy['date'])
 # print(se.rolling(3, closed='both').mean())
 
 
+print(df)
+df = df.shift(1)
+print(df)
 
-
+df = df.dropna()
+print(df)
 
 
 
