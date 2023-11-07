@@ -13,7 +13,7 @@ df = df.reindex(df.index[::-1])
 calculate_df = df.loc[:, ['trade_date', 'open', 'high', 'low', 'close']]
 calculate_df['open_close'] = calculate_df['open'] - calculate_df['close']
 calculate_df['high_low'] = calculate_df['high'] - calculate_df['low']
-calculate_df['target'] = np.where((calculate_df['close'].shift(-1) > calculate_df['close']), 1, -1)
+calculate_df['target'] = np.where((calculate_df['close'].shift(-1) > calculate_df['close']), 1, 0)
 calculate_df = calculate_df.dropna()
 
 X = calculate_df[['open_close', 'high_low']]
@@ -24,4 +24,28 @@ knn_stock = KNeighborsClassifier(n_neighbors=95)
 knn_stock.fit(X_train, y_train)
 print(knn_stock.score(X_train, y_train))
 print(knn_stock.score(X_test, y_test))
+
+new_df = calculate_df.iloc[-20:]
+new_df['knn_predict_signal'] = knn_stock.predict(calculate_df[['open_close', 'high_low']])
+new_df['signal'] = new_df['knn_predict_signal'].diff()
+new_df = new_df.fillna(0)
+new_df['stock_num'] = new_df['signal'].cumsum() * 1500
+new_df['stock_value'] = new_df['stock_num'] * new_df['close']
+yesterday_cash = 20000.0
+init_cash = 20000.0
+new_df['mid_value'] = new_df['signal'] * 1500 * new_df['close']
+new_df['cash_in_hand'] = np.zeros((1, 20))[0]
+for index in new_df.index:
+    new_df.loc[index, 'cash_in_hand'] = yesterday_cash - new_df.loc[index, 'mid_value']
+    yesterday_cash = new_df.loc[index, 'cash_in_hand']
+new_df['total'] = new_df['cash_in_hand'] + new_df['stock_value']
+new_df['knn_yield'] = ((new_df['total'] - init_cash) / init_cash) * 100
+
+# new_df['diff_close'] = new_df['close'] - new_df['close'].shift(1)
+# new_df = new_df.fillna(0)
+# new_df['001_signal'] = np.where(new_df['diff_close'] > 0, 1, 0)
+
+
+
+
 
