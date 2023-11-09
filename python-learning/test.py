@@ -32,5 +32,9 @@ df['avg_10'] = df['close'].rolling(10, closed='left').mean()
 # df = df.loc[9:0]
 
 
-print(df)
+# print(df)
 
+df = df.drop(['avg_5'], axis=1)
+print(df)
+print(df[1:3])
+print(df[-2:-1])
