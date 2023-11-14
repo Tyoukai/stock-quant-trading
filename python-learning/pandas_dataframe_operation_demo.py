@@ -8,8 +8,9 @@ df = pd.DataFrame({
 })
 
 # axis 0: 以列的维度进行运算
-df[['语文成绩', '英语成绩']] = df[['语文成绩', '英语成绩']].div(df['数学成绩'], axis=0)
-print(df)
+# df[['语文成绩', '英语成绩']] = df[['语文成绩', '英语成绩']].div(df['数学成绩'], axis=0)
+# print(df)
+#
+# df = df.div([2, 3, 4], axis=1)
+# print(df)
 
-df = df.div([2, 3, 4], axis=1)
-print(df)
