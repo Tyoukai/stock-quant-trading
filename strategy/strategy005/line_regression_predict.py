@@ -2,7 +2,7 @@ from jqdatasdk import *
 from sklearn.linear_model import LinearRegression
 import pandas as pd
 
-auth('15629032381', 'zkw123ZKW%')
+auth('15629032381', '%')
 stocks = get_index_stocks('000016.XSHG', '2023-08-10')
 q = query(valuation.code,
           # 市值
@@ -29,16 +29,12 @@ X = X.fillna(0)
 y = y.fillna(0)
 
 lr = LinearRegression().fit(X, y)
-predict = pd.DataFrame(lr.predict(X), index=y.index, columns=['predict_mcap'])
-diff = df['mcap'] - predict['predict_mcap']
-diff = pd.DataFrame(diff, index=y.index, columns=['diff'])
-diff = diff.sort_values(by='diff', ascending=True)
-
-sell_or_buy_list = diff.iloc[:10, 0]
-print(sell_or_buy_list)
-
-if 'dd' not in sell_or_buy_list:
-    pass
+# predict = pd.DataFrame(lr.predict(X), index=y.index, columns=['predict_mcap'])
+# diff = df['mcap'] - predict['predict_mcap']
+# diff = pd.DataFrame(diff, index=y.index, columns=['diff'])
+# diff = diff.sort_values(by='diff', ascending=True)
+#
+# sell_or_buy_list = diff.iloc[:10, 0]
 
 # 获取当前持有的股票
 # hold_list = list(context.portfolio.positions.keys())
