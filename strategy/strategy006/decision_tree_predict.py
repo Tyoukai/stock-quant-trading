@@ -1,6 +1,6 @@
 from jqdatasdk import *
 
-auth('15629032381', 'zkw123ZKW%')
+auth('15629032381', '%')
 stocks = get_index_stocks('000300.XSHG', '2023-07-12')
 q = query(valuation.code, valuation.market_cap,
           balance.total_current_assets-balance.total_assets,
