@@ -1,26 +1,22 @@
-from sklearn.datasets import make_regression
-from sklearn.tree import DecisionTreeRegressor
-from sklearn.ensemble import RandomForestRegressor
-import matplotlib.pyplot as plt
-import numpy as np
+from jqdatasdk import *
 
-X, y = make_regression(n_samples=100,
-                       n_features=1, noise=60, random_state=18)
+auth('15629032381', 'zkw123ZKW%')
+stocks = get_index_stocks('000300.XSHG', '2023-07-12')
+q = query(valuation.code, valuation.market_cap,
+          balance.total_current_assets-balance.total_assets,
+          balance.total_liability-balance.total_assets,
+          balance.total_liability/balance.equities_parent_company_owners,
+          (balance.total_assets-balance.total_current_assets)/balance.total_assets,
+          balance.equities_parent_company_owners/balance.total_assets,
+          indicator.inc_total_revenue_year_on_year,
+          valuation.turnover_ratio,
+          valuation.pe_ratio,
+          valuation.pb_ratio,
+          valuation.ps_ratio,
+          indicator.roa).filter(valuation.code.in_(stocks))
+df = get_fundamentals(q, '2023-07-12')
+df.columns = ['code', '市值', '净运营资本', '净债务',
+              '产权比例', '非流动资产比率', '股东权益比率', '营收增长率',
+              '换手率', 'PE', 'PB', 'PS', '总资产收益率']
 
-reg = DecisionTreeRegressor(max_depth=None)
-reg.fit(X, y)
-X_new = np.linspace(-2.5, 3.5, 100)
-y_new = reg.predict(X_new.reshape(-1, 1))
-
-reg2 = RandomForestRegressor(n_estimators=100)
-reg2.fit(X, y)
-y_new_2 = reg2.predict(X_new.reshape(-1, 1))
-
-
-fig = plt.figure(1, (10, 8))
-ax = fig.add_subplot(111)
-ax.scatter(X, y, s=100, color='k')
-ax.plot(X_new, y_new, 'r--')
-ax.plot(X_new, y_new_2, 'g-')
-plt.grid()
-plt.show()
+print(df)
