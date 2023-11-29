@@ -1,10 +1,8 @@
-import pandas as pd
 from jqdatasdk import *
 import datetime
 import numpy as np
 from sklearn.model_selection import train_test_split
-from sklearn.tree import DecisionTreeClassifier
-
+from sklearn import svm
 
 auth('15629032381', '%')
 stocks = get_index_stocks('000300.XSHG', '2023-07-12')
@@ -41,23 +39,17 @@ df['close1'] = list(get_price(stocks, end_date=yesterday, count=1, fq='pre', pan
 df['close2'] = list(get_price(stocks, end_date=history, count=1, fq='pre', panel=False)['close'])
 df['return'] = df['close1'] / df['close2'] - 1
 df['signal'] = np.where(df['return'] < df['return'].mean(), 0, 1)
+
+df = df.fillna(0)
 print(df)
 
 X = df.drop(['close1', 'close2', 'return', 'signal'], axis=1)
 y = df['signal']
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
-clf = DecisionTreeClassifier(random_state=1000)
+
+clf = svm.SVC(kernel='rbf', C=1000)
 clf.fit(X_train, y_train)
+
 print(clf.score(X_train, y_train), clf.score(X_test, y_test))
-
-factor_weight = pd.DataFrame({
-    'features': list(X.columns),
-    'importance': clf.feature_importances_
-})
-
-print(factor_weight)
-
-
-
 
