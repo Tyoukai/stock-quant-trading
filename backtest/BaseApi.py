@@ -1,6 +1,8 @@
 import tushare as ts
+import akshare as ak
 
 
+# 获取每日收盘价格
 def get_daily_stock(code, start_date, end_date):
     ts.set_token('99c90b0a4e59eb836aebcfd89e6d0aa62b77212fabaa9c7a5c81e888')
     pro = ts.pro_api()
@@ -8,4 +10,9 @@ def get_daily_stock(code, start_date, end_date):
     df = df.reindex(df.index[::-1])
     return df
 
+
+# 获取场内ETF信息
+# ak.get_etf_inside('510500', '20230818', '20230928')
+def get_etf_inside(code, start_date, end_date):
+    return ak.fund_etf_fund_info_em(code, start_date, end_date)
 
