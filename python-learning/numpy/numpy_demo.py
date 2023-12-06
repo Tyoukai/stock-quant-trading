@@ -36,9 +36,13 @@ import numpy as np
 # print(array4)
 
 # ravel 将多维数组展开为一维
-array1 = np.arange(6).reshape(2, 3)
-print(array1.ravel())
+# array1 = np.arange(6).reshape(2, 3)
+# print(array1.ravel())
+#
+# array2 = np.arange(6).reshape(2, 3)
+# print(np.vstack([array1, array2]).ravel())
 
-array2 = np.arange(6).reshape(2, 3)
-print(np.vstack([array1, array2]).ravel())
+# 标准差 np.std 默认除以n，加上ddof=1后除以n-1
+array = [0.1, -0.1091, -0.1429, 0.0952, 0.1739, 0.0185]
+print(np.std(array, ddof=1))
 

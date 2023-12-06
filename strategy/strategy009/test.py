@@ -1,4 +1,3 @@
-from backtest.IndexCalculation import calculate_sharp_rate
 from backtest.BaseApi import *
 
 df = get_daily_stock('510500.SZ', '20230818', '20230928')
