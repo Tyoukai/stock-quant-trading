@@ -1,5 +1,6 @@
 import numpy as np
 from datetime import datetime
+import pandas as pd
 
 
 def calculate_sharp_rate(init_fund, df, std_rate):
@@ -11,32 +12,51 @@ def calculate_sharp_rate(init_fund, df, std_rate):
     :param std_rate: 无风险年化利率
     """
     # 总的风险利率
-    total_profit_rate = (df['total_asset'][-1] - init_fund) / init_fund
+    total_profit_rate = (df['total_asset'].iloc[-1] - init_fund) * 1.0 / init_fund
     df['profit'] = df['total_asset'].diff()
-    df['profit'][0] = df['total_asset'][0] - init_fund
+    df.loc[0, 'profit'] = df['total_asset'][0] - init_fund
     df['profit_rate'] = df['profit'] / df['total_asset'].shift(1)
-    df['profit_rate'][0] = df['profit'][0] / init_fund
+    df.loc[0, 'profit_rate'] = df['profit'][0] * 1.0 / init_fund
     # 利率标准差
     profit_rate_std = np.std(df['profit_rate'], ddof=1)
-    start_date = datetime.strptime(df.index[0], '%Y-%m-%d')
-    end_date = datetime.strptime(df.index[-1], '%Y-%m-%d')
+    start_date = datetime.strptime(df['date'][0], '%Y-%m-%d')
+    end_date = datetime.strptime(df['date'].iloc[-1], '%Y-%m-%d')
     interval = (end_date - start_date).days + 1
 
     # 风险收益
     erp = total_profit_rate / interval
     # 无风险收益
-    rf = std_rate / 365.0
+    rf = std_rate / 356
     # 标准夏普率
     return (erp - rf) / profit_rate_std
 
 
 # 计算给定数据下最大回测
 def calculate_max_drawdown(df):
+    max_drawdown = 0
+    total_asset = df['total_asset']
 
-    pass
+    count = len(total_asset)
+    for index in range(count - 1):
+        for index1 in range(index + 1, count):
+            if total_asset[index] > total_asset[index1]:
+                tmp_max_drawdown = 1 - total_asset[index1] * 1.0 / total_asset[index]
+                if tmp_max_drawdown > max_drawdown:
+                    max_drawdown = tmp_max_drawdown
+    return max_drawdown
 
 
 # 计算给定数据下收益率
 def calculate_rate_of_return(init_fund, df):
-    return (df['total_asset'][-1] - init_fund) / init_fund
+    return (df['total_asset'].iloc[-1] - init_fund) * 1.0 / init_fund
+
+
+if __name__ == '__main__':
+    df = pd.DataFrame({
+        'date': ['2023-11-27', '2023-11-28', '2023-11-29', '2023-11-30', '2023-12-01', '2023-12-02'],
+        'total_asset': [5500, 4900, 4200, 4600, 5400, 5500]
+    })
+    print(calculate_sharp_rate(5000.0, df, 0.03))
+    print(calculate_max_drawdown(df))
+    print(calculate_rate_of_return(5000.0, df))
 
