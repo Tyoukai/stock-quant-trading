@@ -3,7 +3,7 @@ import pandas as pd
 import tushare as ts
 import numpy as np
 
-ts.set_token('99c90b0a4e59eb836aebcfd89e6d0aa62b77212fabaa9c7a5c81e888')
+ts.set_token('')
 pro = ts.pro_api()
 df = pro.daily(ts_code='000001.SZ', start_date='20230818', end_date='20230928')
 df = df.reindex(df.index[::-1])

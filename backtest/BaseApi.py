@@ -16,3 +16,6 @@ def get_daily_stock(code, start_date, end_date):
 def get_etf_inside(code, start_date, end_date):
     return ak.fund_etf_fund_info_em(code, start_date, end_date)
 
+
+if __name__ == '__main__':
+    print(get_etf_inside('510500', '20230818', '20230928'))
