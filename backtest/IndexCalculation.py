@@ -48,7 +48,7 @@ def calculate_max_drawdown(df):
 
 # 计算给定数据下收益率
 def calculate_rate_of_return(init_fund, df):
-    return (df['total_asset'].iloc[-1] - init_fund) * 1.0 / init_fund
+    df['rate_of_return'] = (df['total_asset'] - init_fund) * 1.0 / init_fund
 
 
 if __name__ == '__main__':
