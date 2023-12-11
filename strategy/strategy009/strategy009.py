@@ -1,3 +1,5 @@
+import numpy as np
+
 from backtest.BaseApi import get_etf_inside
 from backtest.IndexCalculation import *
 import pandas as pd
@@ -13,10 +15,10 @@ def init_strategy():
     # 中证500ETF 510500 start 2013-03-08
     # 国债指数ETF 511010 start 2013-03-08
 
-    sz_50_etf = get_etf_inside('510050', '20231201', '20231208')
-    hs_300_etf = get_etf_inside('510300', '20231201', '20231208')
-    zz_500_etf = get_etf_inside('510500', '20231201', '20231208')
-    gz_etf = get_etf_inside('511010', '20231201', '20231208')
+    sz_50_etf = get_etf_inside('510050', '20231120', '20231208')
+    hs_300_etf = get_etf_inside('510300', '20231120', '20231208')
+    zz_500_etf = get_etf_inside('510500', '20231120', '20231208')
+    gz_etf = get_etf_inside('511010', '20231120', '20231208')
     # sz_50_etf = sz_50_etf.reindex(sz_50_etf.index[::-1]).reset_index(drop=True)
     # hs_300_etf = hs_300_etf.reindex(hs_300_etf.index[::-1]).reset_index(drop=True)
     # zz_500_etf = zz_500_etf.reindex(zz_500_etf.index[::-1]).reset_index(drop=True)
@@ -28,7 +30,7 @@ def init_strategy():
     df['close_300'] = hs_300_etf['单位净值']
     df['close_500'] = zz_500_etf['单位净值']
     df['close_gz'] = gz_etf['单位净值']
-    df['total_asset'] = df['total_asset'].fillna(0.0)
+    df['total_asset'] = np.zeros(len(df['date']))
     return df
 
 
@@ -60,11 +62,12 @@ if __name__ == '__main__':
     current_cash = 100000.0
     current_etf_num = 0
     current_hold = ''
-    i = 20
+    i = 10
+    period = 10
     while i < df.index[-1]:
 
         # 计算当前周期内的总资产
-        for index in range(i - 20, i):
+        for index in range(i - period, i):
             if current_hold == '':
                 df['total_asset'][index] = current_cash
             elif current_hold == 'sz_50':
@@ -77,9 +80,9 @@ if __name__ == '__main__':
                 df['total_asset'][index] = current_cash + current_etf_num * df['close_gz'][i] * current_etf_num
 
         # 判断是否换仓
-        sz_50_increase = (df['close_50'][i] - df['close_50'][i - 20]) / df['close_50'][i - 20]
-        hs_300_increase = (df['close_300'][i] - df['close_300'][i - 20]) / df['close_300'][i - 20]
-        zz_500_increase = (df['close_500'][i] - df['close_500'][i - 20]) / df['close_500'][i - 20]
+        sz_50_increase = (df['close_50'][i] - df['close_50'][i - period]) / df['close_50'][i - period]
+        hs_300_increase = (df['close_300'][i] - df['close_300'][i - period]) / df['close_300'][i - period]
+        zz_500_increase = (df['close_500'][i] - df['close_500'][i - period]) / df['close_500'][i - period]
 
         if sz_50_increase > hs_300_increase and sz_50_increase > zz_500_increase and sz_50_increase > 0:
             if current_hold == 'sz_50':
@@ -132,8 +135,24 @@ if __name__ == '__main__':
 
             current_cash, current_etf_num = buy_stock(current_cash, df['close_gz'][i])
             current_hold = 'gz'
-        i += 20
 
+        # 计算剩下未满周期的总金额
+        if (i + period) > df.index[-1]:
+            for index in range(i, df.index[-1] + 1):
+                if current_hold == 'sz_50':
+                    df['total_asset'][index] = current_cash + current_etf_num * df['close_50'][index]
+                elif current_hold == 'hs_300':
+                    df['total_asset'][index] = current_cash + current_etf_num * df['close_300'][index]
+                elif current_hold == 'zz_500':
+                    df['total_asset'][index] = current_cash + current_etf_num * df['close_500'][index]
+                elif current_hold == 'gz':
+                    df['total_asset'][index] = current_cash + current_etf_num * df['close_gz'][index]
+                else:
+                    df['total_asset'][index] = current_cash
+
+        i += period
+
+    df = df.drop(range(period), axis=0).reset_index(drop=True)
     sharp_rate = calculate_sharp_rate(init_fund, df, 0.03)
     max_drawdown = calculate_max_drawdown(df)
     calculate_rate_of_return(init_fund, df)
