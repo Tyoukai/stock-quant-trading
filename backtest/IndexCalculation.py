@@ -1,5 +1,5 @@
 import numpy as np
-from datetime import datetime
+import datetime
 import pandas as pd
 
 
@@ -19,9 +19,13 @@ def calculate_sharp_rate(init_fund, df, std_rate):
     df.loc[0, 'profit_rate'] = df['profit'][0] * 1.0 / init_fund
     # 利率标准差
     profit_rate_std = np.std(df['profit_rate'], ddof=1)
-    start_date = datetime.strptime(df['date'][0], '%Y-%m-%d')
-    end_date = datetime.strptime(df['date'].iloc[-1], '%Y-%m-%d')
-    interval = (end_date - start_date).days + 1
+    interval = 1
+    if isinstance(df['date'][0], datetime.date) or isinstance(df['date'][0], datetime.datetime):
+        interval = (df['date'].iloc[-1] - df['date'][0]).days + 1
+    else:
+        start_date = datetime.datetime.strptime(df['date'][0], '%Y-%m-%d')
+        end_date = datetime.datetime.strptime(df['date'].iloc[-1], '%Y-%m-%d')
+        interval = (end_date - start_date).days + 1
 
     # 风险收益
     erp = total_profit_rate / interval
