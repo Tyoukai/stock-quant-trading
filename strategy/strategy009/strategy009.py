@@ -3,6 +3,7 @@ from backtest.IndexCalculation import *
 from backtest.StockOperation import *
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 def init_strategy(start_date, end_date):
@@ -31,7 +32,8 @@ def init_strategy(start_date, end_date):
 
 
 if __name__ == '__main__':
-    df = init_strategy('20130308', '20150413')
+    df = init_strategy('20130308', '20150413') #20150413
+    df = df.dropna(axis=0, how='any').reset_index(drop=True)
     init_fund = 100000.0
     current_cash = 100000.0
     current_etf_num = 0
@@ -60,8 +62,7 @@ if __name__ == '__main__':
 
         if sz_50_increase > hs_300_increase and sz_50_increase > zz_500_increase and sz_50_increase > 0:
             if current_hold == 'sz_50':
-                i += period
-                continue
+                pass
             else:
                 if current_hold == 'hs_300':
                     current_cash = current_cash + sale_stock(df['close_300'][i], current_etf_num)
@@ -74,8 +75,7 @@ if __name__ == '__main__':
                 current_hold = 'sz_50'
         elif hs_300_increase > sz_50_increase and hs_300_increase > zz_500_increase and hs_300_increase > 0:
             if current_hold == 'hs_300':
-                i += period
-                continue
+                pass
             else:
                 if current_hold == 'sz_50':
                     current_cash = current_cash + sale_stock(df['close_50'][i], current_etf_num)
@@ -88,8 +88,7 @@ if __name__ == '__main__':
                 current_hold = 'hs_300'
         elif zz_500_increase > sz_50_increase and zz_500_increase > hs_300_increase and zz_500_increase > 0:
             if current_hold == 'zz_500':
-                i += period
-                continue
+                pass
             else:
                 if current_hold == 'sz_50':
                     current_cash = current_cash + sale_stock(df['close_50'][i], current_etf_num)
@@ -102,8 +101,7 @@ if __name__ == '__main__':
                 current_hold = 'zz_500'
         else:
             if current_hold == 'gz':
-                i += period
-                continue
+                pass
             elif current_hold == 'sz_50':
                 current_cash = current_cash + sale_stock(df['close_50'][i], current_etf_num)
             elif current_hold == 'hs_300':
@@ -136,3 +134,12 @@ if __name__ == '__main__':
     print('夏普率:', sharp_rate)
     print('最大回撤:', max_drawdown)
     print('收益率:', df['rate_of_return'])
+
+    figure = plt.figure(1, (10, 8))
+    ax = figure.add_subplot(111)
+
+    ax.plot(df['date'], df['total_asset'], 'r--', label='total_asset')
+    ax.plot(df['date'], np.ones(len(df.index)) * init_fund, 'k-', label='init_fund')
+    ax.legend(loc=3)
+    plt.show()
+
