@@ -1,9 +1,9 @@
 from backtest.BaseApi import get_etf_inside
 from backtest.IndexCalculation import *
 from backtest.StockOperation import *
+from backtest.Graph import *
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 
 
 def init_strategy(start_date, end_date):
@@ -32,7 +32,9 @@ def init_strategy(start_date, end_date):
 
 
 if __name__ == '__main__':
-    df = init_strategy('20130308', '20150413') #20150413
+    # 20130308 20150413
+    # 20150420 20231212
+    df = init_strategy('20130308', '20150413')
     df = df.dropna(axis=0, how='any').reset_index(drop=True)
     init_fund = 100000.0
     current_cash = 100000.0
@@ -128,18 +130,8 @@ if __name__ == '__main__':
         i += period
 
     df = df.drop(range(period), axis=0).reset_index(drop=True)
-    sharp_rate = calculate_sharp_rate(init_fund, df, 0.03)
-    max_drawdown = calculate_max_drawdown(df)
+    calculate_sharp_rate(init_fund, df, 0.03)
+    calculate_max_drawdown(df)
     calculate_rate_of_return(init_fund, df)
-    print('夏普率:', sharp_rate)
-    print('最大回撤:', max_drawdown)
-    print('收益率:', df['rate_of_return'])
-
-    figure = plt.figure(1, (10, 8))
-    ax = figure.add_subplot(111)
-
-    ax.plot(df['date'], df['total_asset'], 'r--', label='total_asset')
-    ax.plot(df['date'], np.ones(len(df.index)) * init_fund, 'k-', label='init_fund')
-    ax.legend(loc=3)
-    plt.show()
+    draw_line_chart(df, init_fund)
 

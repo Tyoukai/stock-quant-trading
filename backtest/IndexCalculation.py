@@ -32,7 +32,9 @@ def calculate_sharp_rate(init_fund, df, std_rate):
     # 无风险收益
     rf = std_rate / 356
     # 标准夏普率
-    return (erp - rf) / profit_rate_std
+    sharp_rate = (erp - rf) / profit_rate_std
+    print('夏普率:', sharp_rate)
+    return sharp_rate
 
 
 # 计算给定数据下最大回测
@@ -47,6 +49,7 @@ def calculate_max_drawdown(df):
                 tmp_max_drawdown = 1 - total_asset[index1] * 1.0 / total_asset[index]
                 if tmp_max_drawdown > max_drawdown:
                     max_drawdown = tmp_max_drawdown
+    print('最大回撤:', max_drawdown)
     return max_drawdown
 
 

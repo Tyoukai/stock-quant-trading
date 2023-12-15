@@ -4,7 +4,6 @@ import numpy as np
 apple = [78, 80, 79, 81, 91, 95, 96]
 banana = [70, 80, 81, 82, 75, 90, 89]
 x = np.arange(1, 8)
-# x = ['20230901', '20230902', '20230903', '20230904', '20230905', '20230906', '20230907']
 fig = plt.figure(num=1, figsize=(6, 4))
 
 ax = fig.add_subplot(111)
