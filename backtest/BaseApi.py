@@ -18,5 +18,5 @@ def get_etf_inside(code, start_date, end_date):
 
 
 if __name__ == '__main__':
-    # print(get_etf_inside('510500', '20230818', '20230928'))
-    print(get_daily_stock('000001.SZ', '20230818', '20230928'))
+    print(get_etf_inside('510500', '20230818', '20230928'))
+    # print(get_daily_stock('000001.SZ', '20230818', '20230928'))

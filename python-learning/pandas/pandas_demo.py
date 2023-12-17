@@ -52,12 +52,14 @@ df = pd.DataFrame(data, columns=['Site', 'Age'])
 # print(se.rolling(3, closed='both').mean())
 
 
-print(df)
-df = df.shift(1)
-print(df)
+# print(df)
+# df = df.shift(1)
+# print(df)
+#
+# df = df.dropna()
+# print(df)
 
-df = df.dropna()
-print(df)
+print(df['Site'].iloc[0:2])
 
 
 
