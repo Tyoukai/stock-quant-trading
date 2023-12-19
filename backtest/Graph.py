@@ -2,11 +2,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def draw_line_chart(df, init_fund):
+def draw_return_on_assets(init_fund, df):
     """
     绘制收益相关折线图
-    :param df:  date + total_asset + rate_of_return 时间 总资产 收益率
     :param init_fund: 初始投入金额
+    :param df:  date + total_asset + rate_of_return 时间 总资产 收益率
     :return:
     """
     # 用来正常显示中文标签

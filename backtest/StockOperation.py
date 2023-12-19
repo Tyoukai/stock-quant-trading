@@ -12,7 +12,7 @@ def buy_stock(current_cash, price):
     return left_cash, stock_in_hand
 
 
-def sale_stock(price, stock_num):
+def sell_stock(price, stock_num):
     """
     卖股票
     :param price:

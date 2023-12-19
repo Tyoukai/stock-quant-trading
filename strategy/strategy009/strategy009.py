@@ -67,11 +67,11 @@ if __name__ == '__main__':
                 pass
             else:
                 if current_hold == 'hs_300':
-                    current_cash = current_cash + sale_stock(df['close_300'][i], current_etf_num)
+                    current_cash = current_cash + sell_stock(df['close_300'][i], current_etf_num)
                 elif current_hold == 'zz_500':
-                    current_cash = current_cash + sale_stock(df['close_500'][i], current_etf_num)
+                    current_cash = current_cash + sell_stock(df['close_500'][i], current_etf_num)
                 elif current_hold == 'gz':
-                    current_cash = current_cash + sale_stock(df['close_gz'][i], current_etf_num)
+                    current_cash = current_cash + sell_stock(df['close_gz'][i], current_etf_num)
 
                 current_cash, current_etf_num = buy_stock(current_cash, df['close_50'][i])
                 current_hold = 'sz_50'
@@ -80,11 +80,11 @@ if __name__ == '__main__':
                 pass
             else:
                 if current_hold == 'sz_50':
-                    current_cash = current_cash + sale_stock(df['close_50'][i], current_etf_num)
+                    current_cash = current_cash + sell_stock(df['close_50'][i], current_etf_num)
                 elif current_hold == 'zz_500':
-                    current_cash = current_cash + sale_stock(df['close_500'][i], current_etf_num)
+                    current_cash = current_cash + sell_stock(df['close_500'][i], current_etf_num)
                 elif current_hold == 'gz':
-                    current_cash = current_cash + sale_stock(df['close_gz'][i], current_etf_num)
+                    current_cash = current_cash + sell_stock(df['close_gz'][i], current_etf_num)
 
                 current_cash, current_etf_num = buy_stock(current_cash, df['close_300'][i])
                 current_hold = 'hs_300'
@@ -93,11 +93,11 @@ if __name__ == '__main__':
                 pass
             else:
                 if current_hold == 'sz_50':
-                    current_cash = current_cash + sale_stock(df['close_50'][i], current_etf_num)
+                    current_cash = current_cash + sell_stock(df['close_50'][i], current_etf_num)
                 elif current_hold == 'hs_300':
-                    current_cash = current_cash + sale_stock(df['close_300'][i], current_etf_num)
+                    current_cash = current_cash + sell_stock(df['close_300'][i], current_etf_num)
                 elif current_hold == 'gz':
-                    current_cash = current_cash + sale_stock(df['close_gz'][i], current_etf_num)
+                    current_cash = current_cash + sell_stock(df['close_gz'][i], current_etf_num)
 
                 current_cash, current_etf_num = buy_stock(current_cash, df['close_500'][i])
                 current_hold = 'zz_500'
@@ -105,11 +105,11 @@ if __name__ == '__main__':
             if current_hold == 'gz':
                 pass
             elif current_hold == 'sz_50':
-                current_cash = current_cash + sale_stock(df['close_50'][i], current_etf_num)
+                current_cash = current_cash + sell_stock(df['close_50'][i], current_etf_num)
             elif current_hold == 'hs_300':
-                current_cash = current_cash + sale_stock(df['close_300'][i], current_etf_num)
+                current_cash = current_cash + sell_stock(df['close_300'][i], current_etf_num)
             elif current_hold == 'zz_500':
-                current_cash = current_cash + sale_stock(df['close_500'][i], current_etf_num)
+                current_cash = current_cash + sell_stock(df['close_500'][i], current_etf_num)
 
             current_cash, current_etf_num = buy_stock(current_cash, df['close_gz'][i])
             current_hold = 'gz'
@@ -133,5 +133,5 @@ if __name__ == '__main__':
     calculate_sharp_rate(init_fund, df, 0.03)
     calculate_max_drawdown(df)
     calculate_rate_of_return(init_fund, df)
-    draw_line_chart(df, init_fund)
+    draw_return_on_assets(init_fund, df)
 
