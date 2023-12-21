@@ -24,7 +24,11 @@ def init_strategy(start_date, end_date):
 
 
 if __name__ == '__main__':
-    df = init_strategy('20130308', '20150413')
+    # 20130308 20150413
+    # 20150420 20231212
+    # 20210310 20231212
+    df = init_strategy('20210310', '20231212').copy()
+
     length = 20
     init_fund = 100000
     cash_in_hand = 100000
@@ -47,6 +51,7 @@ if __name__ == '__main__':
         elif df['open'].iloc[i] < df['ave_value'].iloc[i]:
             if stock_num_in_hand > 0:
                 cash_in_hand += sell_stock(df['open'].iloc[i], stock_num_in_hand)
+                stock_num_in_hand = 0
         df['total_asset'].iloc[i] = cash_in_hand + stock_num_in_hand * df['close'].iloc[i]
 
     calculate_sharp_rate(init_fund, df, 0.03)
