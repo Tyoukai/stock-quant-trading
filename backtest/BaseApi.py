@@ -1,3 +1,4 @@
+import pandas as pd
 import tushare as ts
 import akshare as ak
 
@@ -15,6 +16,20 @@ def get_daily_stock(code, start_date, end_date):
 # ak.get_etf_inside('510500', '20230818', '20230928')
 def get_etf_inside(code, start_date, end_date):
     return ak.fund_etf_fund_info_em(code, start_date, end_date)
+
+
+# stock_sh_a_spot_em 沪a 列表 stock_sz_a_spot_em 深a列表
+def list_low_price_stock(num):
+    """
+    获取沪深低价股列表
+    :param num:
+    :return: 低价股股票代码
+    """
+    sh_stock_list = ak.stock_sh_a_spot_em()
+    sz_stock_list = ak.stock_sz_a_spot_em()
+
+    df = pd.DataFrame()
+    return df
 
 
 if __name__ == '__main__':
