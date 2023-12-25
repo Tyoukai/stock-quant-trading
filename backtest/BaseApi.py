@@ -27,11 +27,20 @@ def list_low_price_stock(num):
     """
     sh_stock_list = ak.stock_sh_a_spot_em()
     sz_stock_list = ak.stock_sz_a_spot_em()
-
     df = pd.DataFrame()
+    df['code'] = sh_stock_list['代码']
+    df['name'] = sh_stock_list['名称']
+    df['latest_close'] = sh_stock_list['最新价']
+    df1 = pd.DataFrame()
+    df1['code'] = sh_stock_list['代码']
+    df1['name'] = sh_stock_list['名称']
+    df1['latest_close'] = sh_stock_list['最新价']
+
+    df.append(df1, ignore_index=True)
     return df
 
 
 if __name__ == '__main__':
-    print(get_etf_inside('510500', '20230818', '20230928'))
+    # print(get_etf_inside('510500', '20230818', '20230928'))
     # print(get_daily_stock('000001.SZ', '20230818', '20230928'))
+    print(ak.stock_sh_a_spot_em())
