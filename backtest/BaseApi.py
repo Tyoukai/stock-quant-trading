@@ -12,6 +12,24 @@ def get_daily_stock(code, start_date, end_date):
     return df
 
 
+def get_daily_stock_by_ak(code, start_date, end_date, adjust='hfq'):
+    """
+    通过ak库获取股票每日复权价格，默认后复权
+    :param code: 股票代码
+    :param start_date:
+    :param end_date:
+    :param adjust: qfq:前复权 hfq：后复权 "":不复权
+    :return:
+    """
+    stock_zh_a_hist_df = ak.stock_zh_a_hist(code, 'daily', start_date, end_date, adjust)
+    stock_zh_a_hist_df.rename(
+        columns={'日期': 'date', '开盘': 'open', '收盘': 'close', '最高': 'high', '最低': 'low'},
+        inplace=True
+    )
+    stock_zh_a_hist_df = stock_zh_a_hist_df.drop(['成交量	', '成交额', '振幅', '涨跌幅', '涨跌额', '换手率'], axis=1)
+
+    return stock_zh_a_hist_df
+
 # 获取场内ETF信息
 # ak.get_etf_inside('510500', '20230818', '20230928')
 def get_etf_inside(code, start_date, end_date):
@@ -19,25 +37,28 @@ def get_etf_inside(code, start_date, end_date):
 
 
 # stock_sh_a_spot_em 沪a 列表 stock_sz_a_spot_em 深a列表
-def list_low_price_stock(num):
+def list_stock_code_and_price(num):
     """
-    获取沪深低价股列表
+    获取沪深股列表
     :param num:
-    :return: 低价股股票代码
+    :return: 股票代码
     """
     sh_stock_list = ak.stock_sh_a_spot_em()
     sz_stock_list = ak.stock_sz_a_spot_em()
-    df = pd.DataFrame()
-    df['code'] = sh_stock_list['代码']
-    df['name'] = sh_stock_list['名称']
-    df['latest_close'] = sh_stock_list['最新价']
-    df1 = pd.DataFrame()
-    df1['code'] = sh_stock_list['代码']
-    df1['name'] = sh_stock_list['名称']
-    df1['latest_close'] = sh_stock_list['最新价']
+    df_sh = pd.DataFrame()
+    df_sh['code'] = sh_stock_list['代码']
+    df_sh['name'] = sh_stock_list['名称']
+    df_sh['latest_close'] = sh_stock_list['最新价']
+    df_sz = pd.DataFrame()
+    df_sz['code'] = sz_stock_list['代码']
+    df_sz['name'] = sz_stock_list['名称']
+    df_sz['latest_close'] = sz_stock_list['最新价']
 
-    df.append(df1, ignore_index=True)
-    return df
+    df_total = df_sh._append(df_sz, ignore_index=True)
+
+    if num is None:
+        return df_total
+    return df_total.iloc[num]
 
 
 if __name__ == '__main__':
