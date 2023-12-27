@@ -30,6 +30,21 @@ def get_daily_stock_by_ak(code, start_date, end_date, adjust='hfq'):
 
     return stock_zh_a_hist_df
 
+
+def get_stock_constituent_by_ak(symbol):
+    """
+    获取指数成本股列表
+    :param symbol: 指数代码 000300:沪深300
+    :return:
+    """
+    index_df = ak.index_stock_cons_weight_csindex_df(symbol)
+    index_df.rename(
+        columns={'指数代码': 'code'},
+        inplace=True
+    )
+    return index_df['code']
+
+
 # 获取场内ETF信息
 # ak.get_etf_inside('510500', '20230818', '20230928')
 def get_etf_inside(code, start_date, end_date):
