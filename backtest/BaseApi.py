@@ -37,9 +37,9 @@ def get_stock_constituent_by_ak(symbol):
     :param symbol: 指数代码 000300:沪深300
     :return:
     """
-    index_df = ak.index_stock_cons_weight_csindex_df(symbol)
+    index_df = ak.index_stock_cons_weight_csindex(symbol)
     index_df.rename(
-        columns={'指数代码': 'code'},
+        columns={'成分券代码': 'code'},
         inplace=True
     )
     return index_df['code']

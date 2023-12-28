@@ -59,8 +59,9 @@ df = pd.DataFrame(data, columns=['Site', 'Age'])
 # df = df.dropna()
 # print(df)
 
-print(df['Site'].iloc[0:2])
+# print(df['Site'].iloc[0:2])
 
+print(data[data['Site'] == 'Google'])
 
 
 

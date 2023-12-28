@@ -50,8 +50,8 @@ def sell_all_stocks():
 
 if __name__ == '__main__':
 
-    start_date = ''
-    end_date = ''
+    start_date = '20130308'
+    end_date = '20150413'
     num = 10
     init_fund = 100000
     cash_in_hand = 100000
