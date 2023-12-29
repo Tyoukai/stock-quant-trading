@@ -26,8 +26,8 @@ def get_daily_stock_by_ak(code, start_date, end_date, adjust='hfq'):
         columns={'日期': 'date', '开盘': 'open', '收盘': 'close', '最高': 'high', '最低': 'low'},
         inplace=True
     )
-    stock_zh_a_hist_df = stock_zh_a_hist_df.drop(['成交量	', '成交额', '振幅', '涨跌幅', '涨跌额', '换手率'], axis=1)
-
+    if set(['成交量', '成交额', '振幅', '涨跌幅', '涨跌额', '换手率']).issubset(stock_zh_a_hist_df.columns):
+        stock_zh_a_hist_df = stock_zh_a_hist_df.drop(['成交量', '成交额', '振幅', '涨跌幅', '涨跌额', '换手率'], axis=1)
     return stock_zh_a_hist_df
 
 
@@ -63,11 +63,11 @@ def list_stock_code_and_price(num):
     df_sh = pd.DataFrame()
     df_sh['code'] = sh_stock_list['代码']
     df_sh['name'] = sh_stock_list['名称']
-    df_sh['latest_close'] = sh_stock_list['最新价']
+    df_sh['close'] = sh_stock_list['最新价']
     df_sz = pd.DataFrame()
     df_sz['code'] = sz_stock_list['代码']
     df_sz['name'] = sz_stock_list['名称']
-    df_sz['latest_close'] = sz_stock_list['最新价']
+    df_sz['close'] = sz_stock_list['最新价']
 
     df_total = df_sh._append(df_sz, ignore_index=True)
 

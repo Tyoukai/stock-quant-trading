@@ -13,4 +13,11 @@ df = pd.DataFrame({
 #
 # df = df.div([2, 3, 4], axis=1)
 # print(df)
+# df = df.sort_values(by=['数学成绩'], ascending=True)
+# print(df)
+
+print(df.drop(0, axis=0))
+
+
+
 
