@@ -20,6 +20,7 @@ def caluclate_macd(stock_list, start_date, end_date):
             continue
         if len(stocks_daily_close.index) == 0:
             stocks_daily_close['date'] = stock_daily_price['date']
+            stocks_daily_close['total_asset'] = np.zeros(len(stock_daily_price['date']))
         stocks_daily_close['close_' + str(stock_list[index])] = stock_daily_price['close']
         stocks_daily_close['cost_' + str(stock_list[index])] = np.zeros(len(stocks_daily_close))
     for code1 in not_normal_code:
@@ -82,10 +83,11 @@ if __name__ == '__main__':
     # stock_list = df['code']
 
     stock_list = ['600010', '600036', '600606', '601818', '600219', '601618', '000783', '000069', '601288', '601216']
-    stock_num_in_hand = pd.DataFrame(data=np.zeros(len(stock_list)), columns=stock_list)
 
     # 2、计算低价股的macd指标&入场信号
     stocks_daily_close = caluclate_macd(stock_list, start_date, end_date)
+    stock_num_in_hand = pd.DataFrame(columns=stock_list)
+    stock_num_in_hand.loc[0] = np.zeros(len(stock_list))
     stocks_daily_close = stocks_daily_close.iloc[30:].reset_index(drop=True)
     for index in range(20, len(stocks_daily_close.index)):
         increase_300 = (stocks_daily_close['close_300'].iloc[index] - stocks_daily_close['close_300'].iloc[index - 20]) / stocks_daily_close['close_300'].iloc[index - 20]
@@ -101,16 +103,13 @@ if __name__ == '__main__':
         for code in stock_list:
             if stocks_daily_close['signal_' + code].iloc[index] == 1 and stock_num_in_hand[code].iloc[0] == 0:
                 buy_stock_cash = cash_in_hand * 0.1
-                left_cash, stock_in_hand = buy_stock(buy_stock_cash, stocks_daily_close['close_' + code])
-                if stock_in_hand == 0:
-                    stocks_daily_close['cost_' + code].iloc[index] = 0
-                    continue
+                left_cash, stock_in_hand = buy_stock(buy_stock_cash, stocks_daily_close['close_' + code].iloc[index])
                 cash_in_hand = cash_in_hand * 0.9 + left_cash
                 stock_num_in_hand[code].iloc[0] = stock_in_hand
                 stocks_daily_close['cost_' + code].iloc[index] = buy_stock_cash - left_cash
                 continue
             # 判断是否卖股票
-            if stock_num_in_hand[code].iloc[0] != 1:
+            if stock_num_in_hand[code].iloc[0] != 0:
                 current_value = stock_num_in_hand[code].iloc[0] * stocks_daily_close['close_' + code].iloc[index]
                 increase_rate = (current_value - stocks_daily_close['cost_' + code].iloc[index - 1]) / stocks_daily_close['cost_' + code].iloc[index - 1]
                 if increase_rate >= 0.2 or increase_rate < -0.1:
@@ -125,8 +124,9 @@ if __name__ == '__main__':
         total_assert = cash_in_hand
         for code in stock_list:
             total_assert += stock_num_in_hand[code].iloc[0] * stocks_daily_close['close_' + code].iloc[index]
-        stocks_daily_close['total_assert'].iloc[index] = total_assert
+        stocks_daily_close['total_asset'].iloc[index] = total_assert
 
+    stocks_daily_close.drop(range(0, 20), axis=0)
     calculate_sharp_rate(init_fund, stocks_daily_close, 0.03)
     calculate_max_drawdown(stocks_daily_close)
     draw_return_on_assets(init_fund, stocks_daily_close)

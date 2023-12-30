@@ -8,8 +8,9 @@ def buy_stock(current_cash, price):
     :return: 剩余现金数量，手持股票数量
     """
     stock_in_hand = current_cash // price
-    left_cash = current_cash - price * stock_in_hand
-    return left_cash, stock_in_hand
+    real_stock_in_hand = stock_in_hand - stock_in_hand % 100
+    left_cash = current_cash - price * real_stock_in_hand
+    return left_cash, real_stock_in_hand
 
 
 def sell_stock(price, stock_num):
