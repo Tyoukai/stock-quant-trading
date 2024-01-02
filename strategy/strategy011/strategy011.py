@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import pandas as pd
 
 from backtest.BaseApi import *
@@ -61,8 +62,8 @@ if __name__ == '__main__':
     start_date = '20130308'
     end_date = '20150413'
     num = 10
-    init_fund = 100000
-    cash_in_hand = 100000
+    init_fund = 100000.0
+    cash_in_hand = 100000.0
 
     # 1、获取前num个的低价股
     # df = list_stock_code_and_price(None)
@@ -98,13 +99,14 @@ if __name__ == '__main__':
                 cash_in_hand += stock_num_in_hand[code].iloc[0] * stocks_daily_close['close_' + code].iloc[index]
                 stocks_daily_close['cost_' + code].iloc[index] = 0
                 stock_num_in_hand[code].iloc[0] = 0
+            stocks_daily_close['total_asset'].iloc[index] = cash_in_hand
             continue
         # 1、计算是否买股票
         for code in stock_list:
             if stocks_daily_close['signal_' + code].iloc[index] == 1 and stock_num_in_hand[code].iloc[0] == 0:
                 buy_stock_cash = cash_in_hand * 0.1
                 left_cash, stock_in_hand = buy_stock(buy_stock_cash, stocks_daily_close['close_' + code].iloc[index])
-                cash_in_hand = cash_in_hand * 0.9 + left_cash
+                cash_in_hand -= stock_in_hand * stocks_daily_close['close_' + code].iloc[index]
                 stock_num_in_hand[code].iloc[0] = stock_in_hand
                 stocks_daily_close['cost_' + code].iloc[index] = buy_stock_cash - left_cash
                 continue
@@ -121,12 +123,22 @@ if __name__ == '__main__':
             stocks_daily_close['cost_' + code].iloc[index] = stocks_daily_close['cost_' + code].iloc[index - 1]
 
         # 计算总资产
-        total_assert = cash_in_hand
+        total_asset = cash_in_hand
         for code in stock_list:
-            total_assert += stock_num_in_hand[code].iloc[0] * stocks_daily_close['close_' + code].iloc[index]
-        stocks_daily_close['total_asset'].iloc[index] = total_assert
+            total_asset += stock_num_in_hand[code].iloc[0] * stocks_daily_close['close_' + code].iloc[index]
+        stocks_daily_close['total_asset'].iloc[index] = total_asset
 
-    stocks_daily_close.drop(range(0, 20), axis=0)
-    calculate_sharp_rate(init_fund, stocks_daily_close, 0.03)
-    calculate_max_drawdown(stocks_daily_close)
-    draw_return_on_assets(init_fund, stocks_daily_close)
+    stocks_daily_close = stocks_daily_close.drop(range(0, 20), axis=0).reset_index(drop=True)
+    stocks_daily_close['rate_of_return'] = (stocks_daily_close['total_asset'] - init_fund) / stocks_daily_close['total_asset']
+
+    figure = plt.figure(1, (10, 6))
+    ax = figure.add_subplot(111)
+    ax.plot(stocks_daily_close['date'], stocks_daily_close['DIF_600010'], 'r--', label='dif')
+    ax.plot(stocks_daily_close['date'], stocks_daily_close['DEA_600010'], 'k--', label='dea')
+    # ax.plot(stocks_daily_close['date'], stocks_daily_close['close_600010'], 'b--', label='close')
+    ax.legend(loc=3)
+    plt.show()
+
+    # calculate_sharp_rate(init_fund, stocks_daily_close, 0.03)
+    # calculate_max_drawdown(stocks_daily_close)
+    # draw_return_on_assets(init_fund, stocks_daily_close)

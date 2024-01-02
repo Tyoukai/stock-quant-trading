@@ -22,7 +22,7 @@ def draw_return_on_assets(init_fund, df):
     ax.set_ylabel('总资产变化')
 
     ax1 = ax.twinx()
-    ax1.plot(df['date'], df['rate_of_return'], 'b-.', label='收益率')
+    ax1.plot(df['date'], df['rate_of_return'], 'r--', label='收益率')
     ax1.set_ylabel('收益率变化')
 
     figure.legend(loc=3, bbox_to_anchor=(0, 0), bbox_transform=ax1.transAxes)
