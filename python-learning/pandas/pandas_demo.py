@@ -1,9 +1,13 @@
 import pandas as pd
 import numpy as np
 
-data = [['Google', 10], ['Runoob', 12], ['Wiki', 13]]
-df = pd.DataFrame(data, columns=['Site', 'Age'])
+def calculate_abs(a):
+    return abs(a)
 
+
+data = [['Google', 10, -11], ['Twitter', 12, 13], ['Facebook', 13, 34]]
+df = pd.DataFrame(data, columns=['Site', 'Age', 'Amount'])
+# print(df)
 
 # df_buy = pd.DataFrame({
 #     'date': [],
@@ -61,9 +65,11 @@ df = pd.DataFrame(data, columns=['Site', 'Age'])
 
 # print(df['Site'].iloc[0:2])
 
-print(data[data['Site'] == 'Google'])
-
-
+# print(sum(df['Age'].iloc[1:3]))
+df['Age_shift'] = df["Age"].shift(1)
+print(df)
+df['abs'] = df.apply(lambda x: abs(x['Age_shift'] - x['Amount']), axis=1)
+print(df['abs'])
 
 
 

@@ -26,7 +26,7 @@ def get_daily_stock_by_ak(code, start_date, end_date, adjust='hfq'):
         columns={'日期': 'date', '开盘': 'open', '收盘': 'close', '最高': 'high', '最低': 'low'},
         inplace=True
     )
-    if set(['成交量', '成交额', '振幅', '涨跌幅', '涨跌额', '换手率']).issubset(stock_zh_a_hist_df.columns):
+    if {'成交量', '成交额', '振幅', '涨跌幅', '涨跌额', '换手率'}.issubset(stock_zh_a_hist_df.columns):
         stock_zh_a_hist_df = stock_zh_a_hist_df.drop(['成交量', '成交额', '振幅', '涨跌幅', '涨跌额', '换手率'], axis=1)
     return stock_zh_a_hist_df
 
