@@ -59,7 +59,7 @@ if __name__ == '__main__':
     # plt.legend(loc=3)
     # plt.show()
 
-    stock_df = get_daily_stock_by_ak('600009', '20230701', '20240105')
+    stock_df = get_daily_stock_by_ak('601318', '20230701', '20240105')
     stock_df = calculate_CCI(stock_df, 12)
     stock_df = stock_df.drop(range(12), axis=0)
 
