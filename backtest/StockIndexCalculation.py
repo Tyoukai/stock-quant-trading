@@ -47,6 +47,37 @@ def calculate_CCI(stock_df, N):
     return stock_df
 
 
+def calculate_AMA(stock_df, N):
+    """
+    计算单只AMA指标 close 标准AMA fast：2， slow：30
+    :param stock_df:
+    :param N: 周期
+    :return:
+    """
+    stock_df['close_shift'] = stock_df['close'].shift(1)
+    stock_df['pre_close'] = stock_df.apply(lambda x: abs(x['close'] - x['close_shift']), axis=1)
+    slowest = 2.0 / (30 + 1)
+    fastest = 2.0 / (2 + 1)
+    stock_df['volatility'] = np.zeros(len(stock_df.index))
+    stock_df['direction'] = np.zeros(len(stock_df.index))
+    stock_df['ER'] = np.zeros(len(stock_df.index))
+    stock_df['smooth'] = np.zeros(len(stock_df.index))
+    stock_df['c'] = np.zeros(len(stock_df.index))
+    stock_df['AMA'] = np.zeros(len(stock_df.index))
+    for i in range(N+1, len(stock_df.index)):
+        stock_df['volatility'].iloc[i] = sum(stock_df['pre_close'].iloc[i-N+1:i+1])
+        stock_df['direction'].iloc[i] = stock_df['close'].iloc[i] - stock_df['close'].iloc[i-N]
+    stock_df['ER'] = stock_df['direction'] / stock_df['volatility']
+    stock_df['smooth'] = stock_df['ER'] * (fastest - slowest) + slowest
+    stock_df['c'] = stock_df['smooth'] * stock_df['smooth']
+    for i in range(1, len(stock_df.index)):
+        stock_df['AMA'].iloc[i] = stock_df['AMA'].iloc[i-1] + stock_df['c'].iloc[i] * (stock_df['close'].iloc[i] - stock_df['AMA'].iloc[i-1])
+
+    stock_df = stock_df.drop(['close_shift', 'pre_close', 'volatility', 'direction', 'ER', 'smooth', 'c'], axis=1)
+    return stock_df
+
+
+
 if __name__ == '__main__':
     # stock_df = get_daily_stock_by_ak('600009', '20230701', '20240105', 'hfq')
     # stock_df = caculate_ATR(stock_df, 12)
