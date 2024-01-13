@@ -55,6 +55,7 @@ def calculate_AMA(stock_df, N):
     :return:
     """
     stock_df['close_shift'] = stock_df['close'].shift(1)
+    stock_df = stock_df.dropna(axis=0, how='any').reset_index(drop=True)
     stock_df['pre_close'] = stock_df.apply(lambda x: abs(x['close'] - x['close_shift']), axis=1)
     slowest = 2.0 / (30 + 1)
     fastest = 2.0 / (2 + 1)
@@ -64,13 +65,13 @@ def calculate_AMA(stock_df, N):
     stock_df['smooth'] = np.zeros(len(stock_df.index))
     stock_df['c'] = np.zeros(len(stock_df.index))
     stock_df['AMA'] = np.zeros(len(stock_df.index))
-    for i in range(N+1, len(stock_df.index)):
+    for i in range(N, len(stock_df.index)):
         stock_df['volatility'].iloc[i] = sum(stock_df['pre_close'].iloc[i-N+1:i+1])
-        stock_df['direction'].iloc[i] = stock_df['close'].iloc[i] - stock_df['close'].iloc[i-N]
+        stock_df['direction'].iloc[i] = stock_df['close'].iloc[i] - stock_df['close'].iloc[i-N+1]
     stock_df['ER'] = stock_df['direction'] / stock_df['volatility']
     stock_df['smooth'] = stock_df['ER'] * (fastest - slowest) + slowest
     stock_df['c'] = stock_df['smooth'] * stock_df['smooth']
-    for i in range(1, len(stock_df.index)):
+    for i in range(N, len(stock_df.index)):
         stock_df['AMA'].iloc[i] = stock_df['AMA'].iloc[i-1] + stock_df['c'].iloc[i] * (stock_df['close'].iloc[i] - stock_df['AMA'].iloc[i-1])
 
     stock_df = stock_df.drop(['close_shift', 'pre_close', 'volatility', 'direction', 'ER', 'smooth', 'c'], axis=1)
@@ -79,6 +80,7 @@ def calculate_AMA(stock_df, N):
 
 
 if __name__ == '__main__':
+    # ATR计算测试
     # stock_df = get_daily_stock_by_ak('600009', '20230701', '20240105', 'hfq')
     # stock_df = caculate_ATR(stock_df, 12)
     # stock_df = stock_df.drop(range(12), axis=0)
@@ -90,16 +92,33 @@ if __name__ == '__main__':
     # plt.legend(loc=3)
     # plt.show()
 
-    stock_df = get_daily_stock_by_ak('601318', '20230701', '20240105')
-    stock_df = calculate_CCI(stock_df, 12)
-    stock_df = stock_df.drop(range(12), axis=0)
+    # CCI计算测试
+    # stock_df = get_daily_stock_by_ak('601318', '20230701', '20240105')
+    # stock_df = calculate_CCI(stock_df, 12)
+    # stock_df = stock_df.drop(range(12), axis=0)
+    #
+    # figure = plt.figure(1, (10, 8))
+    # ax = figure.add_subplot(111)
+    # ax.plot(stock_df['date'], stock_df['CCI'], 'r-', label='CCI')
+    # ax.plot(stock_df['date'], np.ones(len(stock_df.index)) * 100, 'k--')
+    # ax.plot(stock_df['date'], np.ones(len(stock_df.index)) * -100, 'k--')
+    # plt.legend(loc=3)
+    # plt.show()
+
+    # AMA计算测试
+    stock_df = get_daily_stock_by_ak('600009', '20200701', '20240105')
+    stock_df = calculate_AMA(stock_df, 20)
+    stock_df['ma_20'] = np.zeros(len(stock_df.index))
+    for i in range(20, len(stock_df.index)):
+        stock_df['ma_20'].iloc[i] = np.mean(stock_df['close'].iloc[i-20+1:i+1])
 
     figure = plt.figure(1, (10, 8))
     ax = figure.add_subplot(111)
-    ax.plot(stock_df['date'], stock_df['CCI'], 'r-', label='CCI')
-    ax.plot(stock_df['date'], np.ones(len(stock_df.index)) * 100, 'k--')
-    ax.plot(stock_df['date'], np.ones(len(stock_df.index)) * -100, 'k--')
+    ax.plot(stock_df['date'], stock_df['close'], 'r-', label='close')
+    ax.plot(stock_df['date'], stock_df['AMA'], 'k--', label='AMA')
+    ax.plot(stock_df['date'], stock_df['ma_20'], 'g--', label='ma_12')
     plt.legend(loc=3)
     plt.show()
+
 
 
