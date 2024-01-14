@@ -1,5 +1,5 @@
 # 计算股市变化的各种技术指标，如MACD、CCI、ATR等
-from BaseApi import *
+# from BaseApi import *
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -106,19 +106,20 @@ if __name__ == '__main__':
     # plt.show()
 
     # AMA计算测试
-    stock_df = get_daily_stock_by_ak('600009', '20200701', '20240105')
-    stock_df = calculate_AMA(stock_df, 20)
-    stock_df['ma_20'] = np.zeros(len(stock_df.index))
-    for i in range(20, len(stock_df.index)):
-        stock_df['ma_20'].iloc[i] = np.mean(stock_df['close'].iloc[i-20+1:i+1])
-
-    figure = plt.figure(1, (10, 8))
-    ax = figure.add_subplot(111)
-    ax.plot(stock_df['date'], stock_df['close'], 'r-', label='close')
-    ax.plot(stock_df['date'], stock_df['AMA'], 'k--', label='AMA')
-    ax.plot(stock_df['date'], stock_df['ma_20'], 'g--', label='ma_12')
-    plt.legend(loc=3)
-    plt.show()
+    # stock_df = get_daily_stock_by_ak('600009', '20200701', '20240105')
+    # stock_df = calculate_AMA(stock_df, 20)
+    # stock_df['ma_20'] = np.zeros(len(stock_df.index))
+    # for i in range(20, len(stock_df.index)):
+    #     stock_df['ma_20'].iloc[i] = np.mean(stock_df['close'].iloc[i-20+1:i+1])
+    #
+    # figure = plt.figure(1, (10, 8))
+    # ax = figure.add_subplot(111)
+    # ax.plot(stock_df['date'], stock_df['close'], 'r-', label='close')
+    # ax.plot(stock_df['date'], stock_df['AMA'], 'k--', label='AMA')
+    # ax.plot(stock_df['date'], stock_df['ma_20'], 'g--', label='ma_12')
+    # plt.legend(loc=3)
+    # plt.show()
+    pass
 
 
 
