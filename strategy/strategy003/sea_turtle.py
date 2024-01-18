@@ -1,34 +1,40 @@
-import tushare as ts
-import pandas as pd
+from backtest.BaseApi import *
+from backtest.StockOperation import *
+from backtest.IndexCalculation import *
+from backtest.Graph import *
 import numpy as np
-import matplotlib.pyplot as plt
-
-ts.set_token('99c90b0a4e59eb836aebcfd89e6d0aa62b77212fabaa9c7a5c81e888')
-pro = ts.pro_api()
-df = pro.daily(ts_code='000001.SZ', start_date='20230704', end_date='20230928')
-df = df.reindex(df.index[::-1])
-
-calculate_df = df.loc[:, ['trade_date', 'high', 'low', 'close']]
-calculate_df['most_high'] = df['high'].rolling(20, closed='left').max()
-calculate_df['most_low'] = df['low'].rolling(20, closed='left').min()
-calculate_df = calculate_df.iloc[-20:]
-calculate_df['buy'] = calculate_df['close'] > calculate_df['most_high']
-calculate_df['sell'] = calculate_df['close'] < calculate_df['most_low']
-
-print(calculate_df)
-
-fig = plt.figure(1, (10, 8))
-ax = fig.add_subplot(111)
-
-ax.plot(calculate_df['trade_date'], calculate_df['most_high'], 'b--', label='up')
-ax.plot(calculate_df['trade_date'], calculate_df['most_low'], 'g--', label='down')
-ax.plot(calculate_df['trade_date'], calculate_df['close'], 'r-', label='close')
-
-ax.set_xticks(['20230901', '20230908', '20230915', '20230922', '20230928'])
-ax.legend(loc=3)
-plt.show()
 
 
+if __name__ == '__main__':
+    stock_df = get_daily_stock_by_ak('600009', '20130308', '20240105')
+    buy_N = 5
+    sell_N = 10
 
+    stock_df['up'] = stock_df['high'].rolling(buy_N, closed='right').max()
+    stock_df['down'] = stock_df['low'].rolling(sell_N, closed='right').max()
+    stock_df = stock_df.dropna(axis=0, how='any').reset_index(drop=True)
 
+    stock_df['signal_buy'] = np.zeros(len(stock_df.index))
+    stock_df['signal_sell'] = np.zeros(len(stock_df.index))
+    stock_df['signal_buy'] = np.where(stock_df['up'] < stock_df['close'], 1, 0)
+    stock_df['signal_sell'] = np.where(stock_df['down'] > stock_df['close'], 1, 0)
 
+    init_fund = 100000.0
+    current_cash_in_hand = 100000.0
+    current_stock_in_hand = 0
+    stock_df['total_asset'] = np.zeros(len(stock_df.index))
+
+    for i in range(len(stock_df.index)):
+        if stock_df['signal_buy'].iloc[i] > 0 and current_stock_in_hand == 0:
+            current_cash_in_hand, current_stock_in_hand = buy_stock(current_cash_in_hand, stock_df['close'].iloc[i])
+        else:
+            if stock_df['signal_sell'].iloc[i] > 0 and current_stock_in_hand > 0:
+                current_cash_in_hand += sell_stock(stock_df['close'].iloc[i], current_stock_in_hand)
+                current_stock_in_hand = 0
+        stock_df['total_asset'].iloc[i] = current_cash_in_hand + current_stock_in_hand * stock_df['close'].iloc[i]
+
+    calculate_sharp_rate(init_fund, stock_df, 0.03)
+    calculate_rate_of_return(init_fund, stock_df)
+    calculate_rate_of_return(init_fund, stock_df)
+
+    draw_return_on_assets(init_fund, stock_df)

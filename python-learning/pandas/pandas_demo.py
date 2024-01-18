@@ -46,14 +46,14 @@ df = pd.DataFrame(data, columns=['Site', 'Age', 'Amount'])
 # print('===========================')
 # print(df)
 
-# se = pd.Series(np.arange(10))
-# print(se)
-#
-# print(se.rolling(3, closed='right').mean())
-#
-# print(se.rolling(4, closed='left').mean())
-#
-# print(se.rolling(3, closed='both').mean())
+se = pd.Series(np.arange(10))
+print(se)
+
+print(se.rolling(3, closed='right').mean())
+
+print(se.rolling(3, closed='left').mean())
+
+print(se.rolling(3, closed='both').mean())
 
 
 # print(df)
@@ -66,10 +66,10 @@ df = pd.DataFrame(data, columns=['Site', 'Age', 'Amount'])
 # print(df['Site'].iloc[0:2])
 
 # print(sum(df['Age'].iloc[1:3]))
-df['Age_shift'] = df["Age"].shift(1)
-print(df)
-df['abs'] = df.apply(lambda x: abs(x['Age_shift'] - x['Amount']), axis=1)
-print(df['abs'])
+# df['Age_shift'] = df["Age"].shift(1)
+# print(df)
+# df['abs'] = df.apply(lambda x: abs(x['Age_shift'] - x['Amount']), axis=1)
+# print(df['abs'])
 
 
 
