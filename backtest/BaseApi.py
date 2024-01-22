@@ -11,6 +11,17 @@ def get_daily_stock(code, start_date, end_date):
     df = df.reindex(df.index[::-1]).reset_index(drop=True)
     return df
 
+def get_stock_code_by_tu():
+    """
+    通过tushare获取股票代码
+    :return:
+    """
+    ts.set_token('99c90b0a4e59eb836aebcfd89e6d0aa62b77212fabaa9c7a5c81e888')
+    pro = ts.pro_api()
+    data = pro.stock_basic(exchange='', list_status='L', fields='ts_code,symbol,name,area,industry,list_date')
+    return data
+
+
 
 def get_daily_stock_by_ak(code, start_date, end_date, adjust='hfq'):
     """
