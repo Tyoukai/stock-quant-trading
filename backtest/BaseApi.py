@@ -11,6 +11,7 @@ def get_daily_stock(code, start_date, end_date):
     df = df.reindex(df.index[::-1]).reset_index(drop=True)
     return df
 
+
 def get_stock_code_by_tu():
     """
     通过tushare获取股票代码
@@ -20,7 +21,6 @@ def get_stock_code_by_tu():
     pro = ts.pro_api()
     data = pro.stock_basic(exchange='', list_status='L', fields='ts_code,symbol,name,area,industry,list_date')
     return data
-
 
 
 def get_daily_stock_by_ak(code, start_date, end_date, adjust='hfq'):
@@ -63,7 +63,7 @@ def get_etf_inside(code, start_date, end_date):
 
 
 # stock_sh_a_spot_em 沪a 列表 stock_sz_a_spot_em 深a列表
-def list_stock_code_and_price(num):
+def list_stock_code_and_price_by_ak(num):
     """
     获取沪深股列表
     :param num:
@@ -91,3 +91,4 @@ if __name__ == '__main__':
     # print(get_etf_inside('510500', '20230818', '20230928'))
     # print(get_daily_stock('000001.SZ', '20230818', '20230928'))
     print(ak.stock_sh_a_spot_em())
+    # print(get_daily_stock_by_ak('600009', '20240123', '20240123'))
