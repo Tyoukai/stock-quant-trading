@@ -84,7 +84,7 @@ def list_stock_code_and_price_by_ak(num):
 
     if num is None:
         return df_total
-    return df_total.iloc[num]
+    return df_total[:num]
 
 
 if __name__ == '__main__':

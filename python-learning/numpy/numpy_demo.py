@@ -46,9 +46,12 @@ import numpy as np
 # array = [0.1, -0.1091, -0.1429, 0.0952, 0.1739, 0.0185]
 # print(np.std(array, ddof=1))
 
-ones = np.ones(10) * 19
-print(type(ones))
-print(ones)
+# ones = np.ones(10) * 19
+# print(type(ones))
+# print(ones)
+#
+# ones = np.ones((1, 10))
+# ones = np.ones((10, 1))
 
-ones = np.ones((1, 10))
-ones = np.ones((10, 1))
+a = np.arange(10)
+print(a)
