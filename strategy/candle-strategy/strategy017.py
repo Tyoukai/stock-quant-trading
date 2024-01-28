@@ -1,17 +1,22 @@
 from backtest.BaseApi import *
-from datetime import date
-from datetime import timedelta
+from sklearn.linear_model import LinearRegression
 import time
+import numpy as np
 
 
-def hit_feature(code):
-    today = date.today().strftime('%Y%M%d')
-    six_days_age = (date.today() - timedelta(6)).strftime('%Y%M%d')
-    stock = get_daily_stock_by_ak(code, six_days_age, today)
+def hit_feature(code, start_date, end_date):
+    try:
+        stock = get_daily_stock_by_ak(code, start_date, end_date)
+        if np.any(stock.isnull()):
+            return False
+        time.sleep(0.005)
+        x = np.arange(len(stock.index)).reshape(-1, 1)
+        stock['mid_close'] = (stock['open'] + stock['close']) / 2.0
+        lr = LinearRegression().fit(x, stock['mid_close'])
+        if (lr.)
 
-
-
-    pass
+    except Exception as e:
+        return False
 
 
 if __name__ == '__main__':
