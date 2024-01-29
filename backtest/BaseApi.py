@@ -42,6 +42,40 @@ def get_daily_stock_by_ak(code, start_date, end_date, adjust='hfq'):
     return stock_zh_a_hist_df
 
 
+def get_realtime_stock_by_ak(market):
+    """
+    获取沪深两市实时股票价格，默认返回所有
+    :param market: sh，sz
+    :return: code, close
+    """
+    if market == 'sh':
+        stock_sh_a_spot_em_df = ak.stock_sh_a_spot_em()
+        sh_stock = pd.DataFrame()
+        sh_stock['code'] = stock_sh_a_spot_em_df['代码']
+        sh_stock['close'] = stock_sh_a_spot_em_df['最新价']
+        sh_stock = sh_stock.dropna(axis=0, how='any').reset_index(drop=True)
+        return sh_stock
+    elif market == 'sz':
+        stock_sz_a_spot_em_df = ak.stock_sz_a_spot_em()
+        sz_stock = pd.DataFrame()
+        sz_stock['code'] = stock_sz_a_spot_em_df['代码']
+        sz_stock['close'] = stock_sz_a_spot_em_df['最新价']
+        sz_stock = sz_stock.dropna(axis=0, how='any').reset_index(drop=True)
+    else:
+        stock_sh_a_spot_em_df = ak.stock_sh_a_spot_em()
+        stock_sz_a_spot_em_df = ak.stock_sz_a_spot_em()
+        sh_stock = pd.DataFrame()
+        sh_stock['code'] = stock_sh_a_spot_em_df['代码']
+        sh_stock['close'] = stock_sz_a_spot_em_df['最新价']
+        sz_stock = pd.DataFrame()
+        sz_stock['code'] = stock_sz_a_spot_em_df['代码']
+        sz_stock['close'] = stock_sz_a_spot_em_df['最新价']
+        hs_stock = sh_stock._append(sz_stock, ignore_index=True)
+        return hs_stock
+
+
+
+
 def get_stock_constituent_by_ak(symbol):
     """
     获取指数成本股列表
