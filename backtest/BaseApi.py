@@ -61,6 +61,7 @@ def get_realtime_stock_by_ak(market):
         sz_stock['code'] = stock_sz_a_spot_em_df['代码']
         sz_stock['close'] = stock_sz_a_spot_em_df['最新价']
         sz_stock = sz_stock.dropna(axis=0, how='any').reset_index(drop=True)
+        return sz_stock
     else:
         stock_sh_a_spot_em_df = ak.stock_sh_a_spot_em()
         stock_sz_a_spot_em_df = ak.stock_sz_a_spot_em()
@@ -71,9 +72,8 @@ def get_realtime_stock_by_ak(market):
         sz_stock['code'] = stock_sz_a_spot_em_df['代码']
         sz_stock['close'] = stock_sz_a_spot_em_df['最新价']
         hs_stock = sh_stock._append(sz_stock, ignore_index=True)
+        hs_stock = hs_stock.dropna(axis=0, how='any').reset_index(drop=True)
         return hs_stock
-
-
 
 
 def get_stock_constituent_by_ak(symbol):
@@ -124,5 +124,6 @@ def list_stock_code_and_price_by_ak(num):
 if __name__ == '__main__':
     # print(get_etf_inside('510500', '20230818', '20230928'))
     # print(get_daily_stock('000001.SZ', '20230818', '20230928'))
-    print(ak.stock_sh_a_spot_em())
+    # print(ak.stock_sh_a_spot_em())
     # print(get_daily_stock_by_ak('600009', '20240123', '20240123'))
+    print(get_realtime_stock_by_ak('all'))
