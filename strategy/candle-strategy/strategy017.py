@@ -13,7 +13,9 @@ def hit_feature(code, start_date, end_date):
         x = np.arange(len(stock.index)).reshape(-1, 1)
         stock['mid_close'] = (stock['open'] + stock['close']) / 2.0
         lr = LinearRegression().fit(x, stock['mid_close'])
-        if (lr.)
+        if lr.coef_ >= 0:
+            return False
+
 
     except Exception as e:
         return False

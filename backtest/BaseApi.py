@@ -125,5 +125,5 @@ if __name__ == '__main__':
     # print(get_etf_inside('510500', '20230818', '20230928'))
     # print(get_daily_stock('000001.SZ', '20230818', '20230928'))
     # print(ak.stock_sh_a_spot_em())
-    # print(get_daily_stock_by_ak('600009', '20240123', '20240123'))
-    print(get_realtime_stock_by_ak('all'))
+    print(get_daily_stock_by_ak('600009', '20240206', '20240206', 'qfq'))
+    # print(get_realtime_stock_by_ak('all'))
