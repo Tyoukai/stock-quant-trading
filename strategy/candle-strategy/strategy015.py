@@ -23,7 +23,7 @@ def up_hit_feature(code, start_date, end_date):
         stock['avg_price'] = (stock['close'] + stock['open']) / 2.0
         lr = LinearRegression().fit(x, stock['avg_price'])
         # 上涨趋势直接返回false
-        if lr.coef_ >= 0:
+        if lr.coef_ >= -0.2:
             return False
 
         today_index = len(stock.index) - 1
@@ -37,6 +37,7 @@ def up_hit_feature(code, start_date, end_date):
             return False
 
         if today_open < yesterday_close and today_close > yesterday_open:
+            print(code)
             return True
         return False
     except Exception as e:
@@ -49,6 +50,6 @@ if __name__ == '__main__':
             找出看涨吞没以及看跌吞没
     """
     stock_df = list_stock_code_and_price_by_ak(None)
-    stock_df['signal'] = stock_df.apply(lambda x: up_hit_feature(x['code'], 20240122, 20240126), axis=1)
+    stock_df['signal'] = stock_df.apply(lambda x: up_hit_feature(x['code'], 20240202, 20240219), axis=1)
     stock_df = stock_df[stock_df['signal']]
     print(stock_df)
