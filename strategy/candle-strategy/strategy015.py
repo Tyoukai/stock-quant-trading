@@ -50,6 +50,6 @@ if __name__ == '__main__':
             找出看涨吞没以及看跌吞没
     """
     stock_df = list_stock_code_and_price_by_ak(None)
-    stock_df['signal'] = stock_df.apply(lambda x: up_hit_feature(x['code'], 20240219, 20240222), axis=1)
+    stock_df['signal'] = stock_df.apply(lambda x: up_hit_feature(x['code'], 20240219, 20240226), axis=1)
     stock_df = stock_df[stock_df['signal']]
     print(stock_df)
