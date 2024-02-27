@@ -26,18 +26,20 @@ def hit_feature(code, start_date, end_date):
         if today_close <= today_open:
             return False
 
+        # 昨天的蜡烛与前天的蜡烛中间存在价格跳空的情况，没有则不构成启明星
         if yesterday_open <= yesterday_close and yesterday_close >= the_day_before_yesterday_close:
             return False
         if yesterday_open > yesterday_close and yesterday_open >= the_day_before_yesterday_close:
             return False
 
-        if is_star(yesterday_open, yesterday_close, yesterday_high, yesterday_low):
-            x = np.arange(len(stock.index)).reshape(-1, 1)
-            stock['mid_close'] = (stock['open'] + stock['close']) / 2.0
-            lr = LinearRegression().fit(x, stock['mid_close'])
-            if lr.coef_ <= -0.2:
-                print(code)
-                return True
+        # 今天的蜡烛向上插入前天蜡烛实体中间
+        if today_close < the_day_before_yesterday_close or today_close > the_day_before_yesterday_open:
+            return False
+
+        # 判断昨天是否是星型以及当前股票是否是下降趋势
+        if is_star(yesterday_open, yesterday_close, yesterday_high, yesterday_low) and is_downtrend(stock):
+            print(code)
+            return True
         return False
     except Exception as e:
         return False

@@ -19,6 +19,18 @@ def up_hit_feature(code, start_date, end_date):
         if np.any(stock.isnull()):
             return False
         time.sleep(0.005)
+
+        # 增加一个下跌天数比率参数，当下跌比率超过60%的时候，才考虑买入
+        fall_count = 0.0
+        total_count = len(stock.index)
+        for i in range(total_count):
+            open_price = stock['open'].iloc[i]
+            close_price = stock['close'].iloc[i]
+            if open_price > close_price:
+                fall_count += 1
+        if fall_count / total_count < 0.6:
+            return False
+
         x = np.arange(len(stock.index)).reshape(-1, 1)
         stock['avg_price'] = (stock['close'] + stock['open']) / 2.0
         lr = LinearRegression().fit(x, stock['avg_price'])
@@ -50,6 +62,6 @@ if __name__ == '__main__':
             找出看涨吞没以及看跌吞没
     """
     stock_df = list_stock_code_and_price_by_ak(None)
-    stock_df['signal'] = stock_df.apply(lambda x: up_hit_feature(x['code'], 20240219, 20240226), axis=1)
+    stock_df['signal'] = stock_df.apply(lambda x: up_hit_feature(x['code'], 20240219, 20240227), axis=1)
     stock_df = stock_df[stock_df['signal']]
     print(stock_df)
