@@ -1,6 +1,5 @@
 from backtest.BaseApi import *
 from backtest.StockShape import *
-from sklearn.linear_model import LinearRegression
 import time
 import numpy as np
 
@@ -14,6 +13,9 @@ def hit_feature(code, start_date, end_date):
 
         today_open = stock['open'].iloc[len(stock.index) - 1]
         today_close = stock['close'].iloc[len(stock.index) - 1]
+        if today_open >= today_close:
+            return False
+
         yesterday_high = stock['high'].iloc[len(stock.index) - 2]
         yesterday_low = stock['low'].iloc[len(stock.index) - 2]
         yesterday_open = stock['open'].iloc[len(stock.index) - 2]
@@ -36,8 +38,15 @@ def hit_feature(code, start_date, end_date):
         if today_close < the_day_before_yesterday_close or today_close > the_day_before_yesterday_open:
             return False
 
-        # 判断昨天是否是星型以及当前股票是否是下降趋势
-        if is_star(yesterday_open, yesterday_close, yesterday_high, yesterday_low) and is_downtrend(stock):
+        # （十字启明星）判断昨天是否是星型以及当前股票是否是下降趋势,十字星不常见
+        # if is_star(yesterday_open, yesterday_close, yesterday_high, yesterday_low) and is_downtrend(stock):
+        #     print(code)
+        #     return True
+
+        # （启明星）判断中间的那根蜡烛是否是小实体（当前实体是前一天实体的20%一下时）及下降趋势
+        entity = abs(yesterday_open - yesterday_close)
+        the_day_before_yesterday_entity = abs(the_day_before_yesterday_close - the_day_before_yesterday_open)
+        if entity / the_day_before_yesterday_entity <= 0.2 and is_downtrend(stock):
             print(code)
             return True
         return False
@@ -51,6 +60,6 @@ if __name__ == '__main__':
         找出看涨的反转趋势图
     """
     stock_df = list_stock_code_and_price_by_ak(None)
-    stock_df['star_signal'] = stock_df.apply(lambda x: hit_feature(x['code'], '20240219', '20240226'), axis=1)
+    stock_df['star_signal'] = stock_df.apply(lambda x: hit_feature(x['code'], '20240220', '20240228'), axis=1)
     stock_df = stock_df[stock_df['star_signal']]
     print(stock_df)

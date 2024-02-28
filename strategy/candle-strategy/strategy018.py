@@ -1,6 +1,4 @@
-import numpy as np
 import time
-from sklearn.linear_model import LinearRegression
 from backtest.BaseApi import *
 from backtest.StockShape import *
 
@@ -28,16 +26,9 @@ def hit_feature(code, start_date, end_date):
             return False
         # 判断今天实体是否在昨天实体中间
         if yesterday_open > today_open > yesterday_close and yesterday_open > today_close > yesterday_close:
-            if is_star(today_open, today_close, today_high, today_low):
-                x = np.arange(len(stock.index)).reshape(-1, 1)
-                stock['mid_close'] = (stock['open'] + stock['close']) / 2.0
-                lr = LinearRegression().fit(x, stock['mid_close'])
-                if lr.coef_ <= -0.2:
-                    print(code)
-                    return True
-                else:
-                    return False
-
+            if is_star(today_open, today_close, today_high, today_low) and is_downtrend(stock):
+                print(code)
+                return True
         else:
             return False
     except Exception as e:
@@ -46,6 +37,6 @@ def hit_feature(code, start_date, end_date):
 
 if __name__ == '__main__':
     stock_df = list_stock_code_and_price_by_ak(None)
-    stock_df['star_signal'] = stock_df.apply(lambda x: hit_feature(x['code'], '20240219', '20240226'), axis=1)
+    stock_df['star_signal'] = stock_df.apply(lambda x: hit_feature(x['code'], '20240220', '20240228'), axis=1)
     stock_df = stock_df[stock_df['star_signal']]
     print(stock_df)

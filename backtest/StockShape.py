@@ -1,6 +1,7 @@
 from sklearn.linear_model import LinearRegression
 import numpy as np
 
+
 def is_star(open, close, high, low):
     """
     十字星判断， 实体长度小于总长度的10%
