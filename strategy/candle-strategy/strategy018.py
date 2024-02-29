@@ -19,13 +19,12 @@ def hit_feature(code, start_date, end_date):
 
         if yesterday_open <= yesterday_close:
             return False
-        # 判断两天的颜色是否相同
-        if today_open >= today_close or yesterday_open >= yesterday_close:
+        if today_open > today_close:
             return False
-        if today_open <= today_close or yesterday_open <= yesterday_close:
-            return False
+
         # 判断今天实体是否在昨天实体中间
         if yesterday_open > today_open > yesterday_close and yesterday_open > today_close > yesterday_close:
+            stock = stock.drop(len(stock.index) - 1, axis=0)
             if is_star(today_open, today_close, today_high, today_low) and is_downtrend(stock):
                 print(code)
                 return True
@@ -37,6 +36,6 @@ def hit_feature(code, start_date, end_date):
 
 if __name__ == '__main__':
     stock_df = list_stock_code_and_price_by_ak(None)
-    stock_df['star_signal'] = stock_df.apply(lambda x: hit_feature(x['code'], '20240220', '20240228'), axis=1)
+    stock_df['star_signal'] = stock_df.apply(lambda x: hit_feature(x['code'], '20240220', '20240229'), axis=1)
     stock_df = stock_df[stock_df['star_signal']]
     print(stock_df)

@@ -35,8 +35,11 @@ def hit_feature(code, start_date, end_date):
             return False
 
         # 今天的蜡烛向上插入前天蜡烛实体中间
-        if today_close < the_day_before_yesterday_close or today_close > the_day_before_yesterday_open:
+        if today_close < the_day_before_yesterday_close:
             return False
+        if not (today_open > yesterday_close and today_open > yesterday_open):
+            return False
+
 
         # （十字启明星）判断昨天是否是星型以及当前股票是否是下降趋势,十字星不常见
         # if is_star(yesterday_open, yesterday_close, yesterday_high, yesterday_low) and is_downtrend(stock):
@@ -60,6 +63,6 @@ if __name__ == '__main__':
         找出看涨的反转趋势图
     """
     stock_df = list_stock_code_and_price_by_ak(None)
-    stock_df['star_signal'] = stock_df.apply(lambda x: hit_feature(x['code'], '20240220', '20240228'), axis=1)
+    stock_df['star_signal'] = stock_df.apply(lambda x: hit_feature(x['code'], '20240220', '20240229'), axis=1)
     stock_df = stock_df[stock_df['star_signal']]
     print(stock_df)
