@@ -13,11 +13,7 @@ def hit_feature(code, start_date, end_date):
 
         today_open = stock['open'].iloc[len(stock.index) - 1]
         today_close = stock['close'].iloc[len(stock.index) - 1]
-        if today_open >= today_close:
-            return False
 
-        yesterday_high = stock['high'].iloc[len(stock.index) - 2]
-        yesterday_low = stock['low'].iloc[len(stock.index) - 2]
         yesterday_open = stock['open'].iloc[len(stock.index) - 2]
         yesterday_close = stock['close'].iloc[len(stock.index) - 2]
         the_day_before_yesterday_open = stock['open'].iloc[len(stock.index) - 3]
@@ -49,6 +45,7 @@ def hit_feature(code, start_date, end_date):
         # （启明星）判断中间的那根蜡烛是否是小实体（当前实体是前一天实体的20%一下时）及下降趋势
         entity = abs(yesterday_open - yesterday_close)
         the_day_before_yesterday_entity = abs(the_day_before_yesterday_close - the_day_before_yesterday_open)
+        stock = stock.drop(len(stock.index) - 1, axis=0)
         if entity / the_day_before_yesterday_entity <= 0.2 and is_downtrend(stock):
             print(code)
             return True
@@ -63,6 +60,6 @@ if __name__ == '__main__':
         找出看涨的反转趋势图
     """
     stock_df = list_stock_code_and_price_by_ak(None)
-    stock_df['star_signal'] = stock_df.apply(lambda x: hit_feature(x['code'], '20240220', '20240229'), axis=1)
+    stock_df['star_signal'] = stock_df.apply(lambda x: hit_feature(x['code'], '20240226', '20240304'), axis=1)
     stock_df = stock_df[stock_df['star_signal']]
     print(stock_df)
