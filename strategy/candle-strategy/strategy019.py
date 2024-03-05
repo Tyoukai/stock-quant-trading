@@ -24,13 +24,13 @@ def hit_feature(code, start_date, end_date):
         if today_open >= today_close:
             return False
 
-        # 两天收盘价要在同一水平线，判断标准：两日价格差，占今日收盘价的5%以内
+        # 两天收盘价要在同一水平线，判断标准：两日价格差，小于1毛
         price_diff = abs(yesterday_close - today_close)
-        if price_diff / today_close > 0.05:
+        if price_diff > 0.1:
             return False
 
         # 今天的开市价远低于昨天的收盘价,判断标准：今日实体长度是昨日实体长度的两倍以上
-        today_entity = abs(today_open - today_close)
+        today_entity = abs(today_open - yesterday_close)
         yesterday_entity = abs(yesterday_open - yesterday_close)
         if today_entity / yesterday_entity < 2.0:
             return False
@@ -48,7 +48,7 @@ if __name__ == '__main__':
     反击线形态
     """
     stock_df = list_stock_code_and_price_by_ak(None)
-    stock_df['signal'] = stock_df.apply(lambda x: hit_feature(x['code'], 20240221, 20240301), axis=1)
+    stock_df['signal'] = stock_df.apply(lambda x: hit_feature(x['code'], '20240227', '20240305'), axis=1)
     stock_df = stock_df.dropna(axis=0, how='any').reset_index(drop=True)
     stock_df = stock_df[stock_df['signal']]
     print(stock_df)
