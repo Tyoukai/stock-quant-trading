@@ -45,6 +45,6 @@ if __name__ == '__main__':
     获取沪深两市每日的斩回线形态
     """
     stock_df = list_stock_code_and_price_by_ak(None)
-    stock_df['signal'] = stock_df.apply(lambda x: hit_feature(x['code'], '20240227', '20240305'), axis=1)
+    stock_df['signal'] = stock_df.apply(lambda x: hit_feature(x['code'], '20240228', '20240306'), axis=1)
     stock_df = stock_df[stock_df['signal']]
     print(stock_df)
