@@ -53,7 +53,7 @@ def hit_feature(code, start_date):
 if __name__ == '__main__':
     stock_df = list_stock_code_and_price_by_ak(None)
     # 判断今天是否是锤子线或上吊线形态
-    stock_df['hit_feature'] = stock_df.apply(lambda x: hit_feature(x['code']), axis=1)
+    stock_df['hit_feature'] = stock_df.apply(lambda x: hit_feature(x['code'], '20240314'), axis=1)
     stock_df = stock_df[stock_df['hit_feature']]
     print(stock_df)
 
