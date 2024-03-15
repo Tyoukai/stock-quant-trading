@@ -60,6 +60,6 @@ if __name__ == '__main__':
         找出看涨的反转趋势图
     """
     stock_df = list_stock_code_and_price_by_ak(None)
-    stock_df['star_signal'] = stock_df.apply(lambda x: hit_feature(x['code'], '20240307', '20240314'), axis=1)
+    stock_df['star_signal'] = stock_df.apply(lambda x: hit_feature(x['code'], '20240308', '20240315'), axis=1)
     stock_df = stock_df[stock_df['star_signal']]
     print(stock_df)
