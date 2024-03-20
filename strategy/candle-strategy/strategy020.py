@@ -28,7 +28,10 @@ def hit_window_feature(code, start_date, end_date):
         # 近三天收盘价必须一天比一天高
         if today_close > yesterday_close > the_day_before_yesterday_close:
             # 今天与昨天之间形成窗口
-            return today_low > yesterday_high
+            if today_low > yesterday_high and (today_close - yesterday_close) / yesterday_close < 0.08:
+                print(code)
+                return True
+            return False
 
         return False
         # if today_open < today_close:
@@ -48,7 +51,7 @@ def hit_window_feature(code, start_date, end_date):
 
 if __name__ == '__main__':
     stock_df = list_stock_code_and_price_by_ak(None)
-    stock_df['signal'] = stock_df.apply(lambda x: hit_window_feature(x['code'], '20240311', '20240318'), axis=1)
+    stock_df['signal'] = stock_df.apply(lambda x: hit_window_feature(x['code'], '20240313', '20240320'), axis=1)
     stock_df = stock_df.dropna(axis=0, how='any').reset_index(drop=True)
     stock_df = stock_df[stock_df['signal']]
     print(stock_df)
