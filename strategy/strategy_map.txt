@@ -45,7 +45,9 @@ strategy016 -> 获取沪深两市每日的斩回线形态
 strategy017 -> 获取沪深两市每日的启明星形态
 strategy018 -> 获取沪深两市每日十字孕线形态
 strategy019 -> 获取沪深两市每日反击线形态
-strategy020 ->
+strategy020 -> 获取有向上的跳跃窗口的形态
+strategy021 -> 获取呈现直角三角形形态
+strategy022 -> 获取呈现旗型状态
 
 
 
