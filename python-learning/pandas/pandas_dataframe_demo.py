@@ -3,8 +3,8 @@ import pandas as pd
 
 df = pd.DataFrame(np.random.randn(6, 4), columns=list('ABCD'))
 print(df)
-# print(df['B'][1])
-# print(df.iloc[1][2])
+print(df['B'][1])
+print(df.iloc[1][2])
 
 # 筛选出B列大于零0的行
 df1 = df[df['B'] > 0]
