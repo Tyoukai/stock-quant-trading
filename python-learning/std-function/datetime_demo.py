@@ -23,4 +23,3 @@ str_before_time = before_time.strftime('%Y-%m-%d %H')
 print(datetime.datetime.strptime(str_before_time, '%Y-%m-%d %H').timestamp())
 
 
-
