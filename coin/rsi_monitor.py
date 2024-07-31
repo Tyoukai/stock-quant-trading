@@ -15,16 +15,25 @@ def calculate_rsi(df_calculate, cycle):
     df_calculate['rsi'] = np.zeros(len(df_calculate.index))
     for i in range(cycle - 1, len(df_calculate.index)):
         gain = 0.0
+        gain_count = 0
         loss = 0.0
-        for j in range(i - cycle + 1, i + 1):
-            if float(df_calculate.iloc[j]['close']) > float(df_calculate.iloc[j]['open']):
-                gain += float(df_calculate.iloc[j]['close']) - float(df_calculate.iloc[j]['open'])
+        loss_count = 0
+        for j in range(i - cycle + 2, i + 1):
+            if float(df_calculate.iloc[j]['close']) > float(df_calculate.iloc[j - 1]['close']):
+                gain += float(df_calculate.iloc[j]['close']) - float(df_calculate.iloc[j - 1]['close'])
+                gain_count += 1
             else:
-                loss += float(df_calculate.iloc[j]['open']) - float(df_calculate.iloc[j]['close'])
+                loss += float(df_calculate.iloc[j - 1]['close']) - float(df_calculate.iloc[j]['close'])
+                loss_count += 1
         rs = 0.0
-        if loss != 0.0:
-            rs = gain / loss
-        rsi = 100.0 - 100.0 / (1 + rs)
+        rsi = 0.0
+        if loss != 0.0 and gain != 0.0:
+            rs = (gain * loss_count) / (loss * gain_count)
+            rsi = 100 - 100.0 / (1 + rs)
+        elif loss == 0.0:
+            rsi = 100
+        elif gain == 0.0:
+            rsi = 0
         df_calculate.loc[i, 'rsi'] = rsi
     return df.drop(range(cycle), axis=0).reset_index(drop=True)
 
