@@ -57,18 +57,46 @@ def hit_feature(df_hit):
     return False
 
 
+def get_start_end_time(type, coin_cycle_local, rsi_calculate_cycle_local):
+    """
+    根据时间类型获取开始和结束时间
+    :param type:
+    :param coin_cycle_local:
+    :param rsi_calculate_cycle_local:
+    :return:
+    """
+    if type == '1h':
+        current_time = datetime.datetime.now()
+        start_time = int(datetime.datetime.strptime(
+            (current_time - timedelta(hours=coin_cycle_local + rsi_calculate_cycle_local)).strftime('%Y-%m-%d %H'),
+            '%Y-%m-%d %H').timestamp() * 1000)
+        end_time = int(datetime.datetime.now().timestamp() * 1000)
+        return start_time, end_time
+    if type == '15m':
+        current_time = datetime.datetime.now()
+        start_time = int(datetime.datetime.strptime(
+            (current_time - timedelta(minutes=(coin_cycle_local + rsi_calculate_cycle_local) * 15)).strftime('%Y-%m-%d %H:%M'),
+            '%Y-%m-%d %H:%M').timestamp() * 1000)
+        end_time = int(datetime.datetime.now().timestamp() * 1000)
+        return start_time, end_time
+        pass
+    pass
+
+
 if __name__ == '__main__':
     client = Spot(base_url='https://api4.binance.com')
     symbols = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT', 'XRPUSDT', 'PEPEUSDT', 'WIFUSDT']
     for symbol in symbols:
-        rsi_calculate_cycle = 6
-        coin_cycle = 42
-        current_time = datetime.datetime.now()
-        startTime = int(datetime.datetime.strptime(
-            (current_time - timedelta(hours=coin_cycle + rsi_calculate_cycle)).strftime('%Y-%m-%d %H'),
-            '%Y-%m-%d %H').timestamp() * 1000)
-        endTime = int(datetime.datetime.now().timestamp() * 1000)
         interval = '15m'
+        rsi_calculate_cycle = 6
+        coin_cycle = 36
+        startTime, endTime = get_start_end_time('15m', 36, 6)
+
+        # interval = '1h'
+        # rsi_calculate_cycle = 6
+        # coin_cycle = 42
+        # startTime, endTime = get_start_end_time('1h', 36, 6)
+
         kline = client.klines(symbol=symbol, interval=interval, startTime=startTime, endTime=endTime)
 
         df = pd.DataFrame(kline, columns=['start_time', 'open', 'high', 'low', 'close', 'vol', 'end_time', 'amount', 'num', '1', '2', '3'])
