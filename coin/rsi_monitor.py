@@ -90,7 +90,7 @@ def get_latest_k_line(symbol_local, interval_local, max_delta, end_time):
     :param end_time:
     :return:
     """
-    end_time = 1723469353000
+    # end_time = 1723469353000
     # 计算开始时间
     if interval_local == '15m':
         unit = 15 * 60 * 1000
