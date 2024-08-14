@@ -126,10 +126,14 @@ def get_latest_k_line(symbol_local, interval_local, max_delta, end_time):
 
 
 if __name__ == '__main__':
+    """
+    rsi计算法，找出当前存在价格背离的代币
+    """
     client = Spot(base_url='https://api4.binance.com')
     symbols = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT', 'SOLUSDT', 'XRPUSDT', 'TONUSDT', 'DOGEUSDT', 'ADAUSDT',
                'WBTCUSDT', 'AVAXUSDT', 'SHIBUSDT', 'DOTUSDT', 'BCHUSDT', 'LINKUSDT', 'LTCUSDT', 'NEARUSDT', 'MATICUSDT',
-               'UNIUSDT', 'PEPEUSDT', 'ICPUSDT']
+               'UNIUSDT', 'PEPEUSDT', 'ICPUSDT', 'APTUSDT', 'WBETHUSDT', 'ETCUSDT', 'SUIUSDT', 'STXUSDT',
+               'FETUSDT', 'FILUSDT']
 
     for symbol in symbols:
         interval = '15m'
