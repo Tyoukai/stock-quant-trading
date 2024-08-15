@@ -4,12 +4,13 @@ import pandas as pd
 import datetime
 from datetime import timedelta
 
+
 def get_latest_k_line(symbol_local, interval_local, max_delta, end_time):
     """
     自定义获取指定时间段的K线
-    :param symbol_local:
-    :param interval_local:
-    :param max_delta:
+    :param symbol_local: 代币符号
+    :param interval_local: 15m:15分钟，1h：1小时
+    :param max_delta: 想要获取多少个interval_local时间维度的k线
     :param end_time:
     :return:
     """
