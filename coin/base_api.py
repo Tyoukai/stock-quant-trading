@@ -29,6 +29,7 @@ def get_latest_k_line(symbol_local, interval_local, max_delta, end_time):
         fifteen_minute_df['start_time'] = fifteen_minute_df['start_time'].astype(int)
         fifteen_minute_df['close'] = np.zeros(max_delta + 1)
         fifteen_minute_df['low'] = np.zeros(max_delta + 1)
+        fifteen_minute_df['high'] = np.zeros(max_delta + 1)
         for i in range(max_delta + 1):
             tmp_one_minute_df = pd.DataFrame()
             if i == max_delta:
@@ -37,13 +38,17 @@ def get_latest_k_line(symbol_local, interval_local, max_delta, end_time):
                 tmp_one_minute_df = one_minute_df[i * 15: i * 15 + 15]
             tmp_one_minute_df_low = (tmp_one_minute_df[['low']].copy()).astype('float')
             tmp_one_minute_df_close = (tmp_one_minute_df[['close']].copy()).astype('float')
+            tmp_one_minute_df_high = (tmp_one_minute_df[['high']].copy()).astype('float')
             min_low = tmp_one_minute_df_low['low'].min()
             close = tmp_one_minute_df_close['close'].iloc[len(tmp_one_minute_df.index) - 1]
+            high = tmp_one_minute_df_high['high'].iloc[len(tmp_one_minute_df.index) - 1]
             start_time = tmp_one_minute_df['start_time'].iloc[0]
             fifteen_minute_df.loc[i, 'start_time'] = start_time
             fifteen_minute_df.loc[i, 'close'] = close
+            fifteen_minute_df.loc[i, 'high'] = high
             fifteen_minute_df.loc[i, 'low'] = min_low
         fifteen_minute_df['close'] = fifteen_minute_df['close'].astype(str)
         fifteen_minute_df['low'] = fifteen_minute_df['low'].astype(str)
+        fifteen_minute_df['high'] = fifteen_minute_df['high'].astype(str)
         return fifteen_minute_df
     return pd.DataFrame()
