@@ -88,7 +88,8 @@ if __name__ == '__main__':
     symbols = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT', 'SOLUSDT', 'XRPUSDT', 'TONUSDT', 'DOGEUSDT', 'ADAUSDT',
                'WBTCUSDT', 'AVAXUSDT', 'SHIBUSDT', 'DOTUSDT', 'BCHUSDT', 'LINKUSDT', 'LTCUSDT', 'NEARUSDT', 'MATICUSDT',
                'UNIUSDT', 'PEPEUSDT', 'ICPUSDT', 'APTUSDT', 'WBETHUSDT', 'ETCUSDT', 'SUIUSDT', 'STXUSDT',
-               'FETUSDT', 'FILUSDT']
+               'FETUSDT', 'FILUSDT', 'HBARUSDT', 'MKRUSDT', 'IMXUSDT', 'ARBUSDT', 'INJUSDT', 'VETUSDT', 'RENDERUSDT',
+               'ATOMUSDT', 'AAVEUSDT', 'WIFUSDT', 'OPUSDT', 'ARUSDT', 'GRTUSDT', 'BONKUSDT']
     # symbols = ['ADAUSDT']
 
     for symbol in symbols:
@@ -105,5 +106,6 @@ if __name__ == '__main__':
 
         df = get_latest_k_line(symbol, interval, coin_cycle + rsi_calculate_cycle, endTime)
         df_rsi = calculate_rsi(df, rsi_calculate_cycle)
+        # print('running')
         if hit_feature(df_rsi):
             print(symbol)
