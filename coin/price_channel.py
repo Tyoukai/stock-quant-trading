@@ -28,9 +28,13 @@ if __name__ == '__main__':
         for coefficient in np.linspace(0, 1, 30):
             ema_fifteen_minute_df['min_value'] = ema_fifteen_minute_df['ema'] * (1 - coefficient)
             ema_fifteen_minute_df['max_value'] = ema_fifteen_minute_df['ema'] * (1 + coefficient)
-            tmp_df_value = ema_fifteen_minute_df[ema_fifteen_minute_df['high'] <= ema_fifteen_minute_df['max_value'] &
-                                                 ema_fifteen_minute_df['low'] >= ema_fifteen_minute_df['min_value']]
-            if len(tmp_df_value.index) / len(ema_fifteen_minute_df.index) >= 0.95:
+
+            count = 0.0
+            for i in range(0, len(ema_fifteen_minute_df.index)):
+                if ema_fifteen_minute_df.iloc[i]['high'] <= ema_fifteen_minute_df.iloc[i]['max_value'] and ema_fifteen_minute_df.iloc[i]['low'] >= ema_fifteen_minute_df.iloc[i]['min_value']:
+                    count += 1
+
+            if count / len(ema_fifteen_minute_df.index) >= 0.95:
                 catch_95 = True
                 break
 
