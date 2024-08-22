@@ -25,25 +25,29 @@ if __name__ == '__main__':
         ema_fifteen_minute_df = ema(fifteen_minute_df, 6, 'close')
         # 根据ema计算价格通道，找出符合条件的轨道系数
         catch_95 = False
-        for coefficient in np.linspace(0, 1, 30):
+        coefficient = 0.0005
+        while coefficient < 1.0:
             ema_fifteen_minute_df['min_value'] = ema_fifteen_minute_df['ema'] * (1 - coefficient)
             ema_fifteen_minute_df['max_value'] = ema_fifteen_minute_df['ema'] * (1 + coefficient)
 
             count = 0.0
             for i in range(0, len(ema_fifteen_minute_df.index)):
-                if ema_fifteen_minute_df.iloc[i]['high'] <= ema_fifteen_minute_df.iloc[i]['max_value'] and ema_fifteen_minute_df.iloc[i]['low'] >= ema_fifteen_minute_df.iloc[i]['min_value']:
+                if ema_fifteen_minute_df.iloc[i]['high'] <= ema_fifteen_minute_df.iloc[i]['max_value'] and \
+                        ema_fifteen_minute_df.iloc[i]['low'] >= ema_fifteen_minute_df.iloc[i]['min_value']:
                     count += 1
 
             if count / len(ema_fifteen_minute_df.index) >= 0.95:
                 catch_95 = True
                 break
 
+            coefficient += 0.0005
+
         if catch_95:
             fig = plt.figure(1, figsize=(6, 4))
             ax = fig.add_subplot(111)
-            ax.plot(ema_fifteen_minute_df['start_time'], ema_fifteen_minute_df['close'], 'r-.d', label='close')
-            ax.plot(ema_fifteen_minute_df['start_time'], ema_fifteen_minute_df['ema'], 'b-.d', label='ema')
-            ax.plot(ema_fifteen_minute_df['start_time'], ema_fifteen_minute_df['min_value'], 'g-.d', label='min')
-            ax.plot(ema_fifteen_minute_df['start_time'], ema_fifteen_minute_df['max_value'], 'g-.d', label='max')
+            ax.plot(ema_fifteen_minute_df['start_time'], ema_fifteen_minute_df['close'], 'r-,', label='close')
+            ax.plot(ema_fifteen_minute_df['start_time'], ema_fifteen_minute_df['ema'], 'b-,', label='ema')
+            ax.plot(ema_fifteen_minute_df['start_time'], ema_fifteen_minute_df['min_value'], 'g-,', label='min')
+            ax.plot(ema_fifteen_minute_df['start_time'], ema_fifteen_minute_df['max_value'], 'k-,', label='max')
             ax.legend(loc=3)
             plt.show()
