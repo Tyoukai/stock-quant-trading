@@ -1,9 +1,41 @@
 import datetime
-import numpy as np
 import matplotlib.pyplot as plt
 
 from base_api import get_latest_k_line
 from moving_average import ema
+
+
+def show_chart(df_local):
+    fig = plt.figure(1, figsize=(6, 4))
+    ax = fig.add_subplot(111)
+    ax.plot(ema_fifteen_minute_df['start_time'], ema_fifteen_minute_df['close'], 'r-,', label='close')
+    ax.plot(ema_fifteen_minute_df['start_time'], ema_fifteen_minute_df['ema'], 'b-,', label='ema')
+    ax.plot(ema_fifteen_minute_df['start_time'], ema_fifteen_minute_df['min_value'], 'g-,', label='min')
+    ax.plot(ema_fifteen_minute_df['start_time'], ema_fifteen_minute_df['max_value'], 'k-,', label='max')
+    ax.legend(loc=3)
+    plt.show()
+
+
+def calculate_coefficient(if_loop, df_local, symbol_local, coefficient_local):
+    while coefficient_local < 1.0:
+        df_local['min_value'] = df_local['ema'] * (1 - coefficient_local)
+        df_local['max_value'] = df_local['ema'] * (1 + coefficient_local)
+
+        count = 0.0
+        for i in range(0, len(df_local.index)):
+            if df_local.iloc[i]['high'] <= df_local.iloc[i]['max_value'] and \
+                    df_local.iloc[i]['low'] >= df_local.iloc[i]['min_value']:
+                count += 1
+
+        if not if_loop:
+            print(symbol_local, coefficient_local, count / len(df_local.index), len(df_local.index), sep=':')
+            return df_local
+
+        if count / len(df_local.index) >= 0.95:
+            print(symbol_local, coefficient_local, count / len(df_local.index), len(df_local.index), sep=':')
+            return df_local
+        coefficient_local += 0.0001
+    return df_local
 
 
 if __name__ == '__main__':
@@ -24,30 +56,7 @@ if __name__ == '__main__':
         fifteen_minute_df['high'] = fifteen_minute_df['high'].astype(float)
         ema_fifteen_minute_df = ema(fifteen_minute_df, 6, 'close')
         # 根据ema计算价格通道，找出符合条件的轨道系数
-        catch_95 = False
-        coefficient = 0.0005
-        while coefficient < 1.0:
-            ema_fifteen_minute_df['min_value'] = ema_fifteen_minute_df['ema'] * (1 - coefficient)
-            ema_fifteen_minute_df['max_value'] = ema_fifteen_minute_df['ema'] * (1 + coefficient)
+        ema_fifteen_minute_df = calculate_coefficient(True, ema_fifteen_minute_df, symbol, 0.0001)
+        show_chart(ema_fifteen_minute_df)
 
-            count = 0.0
-            for i in range(0, len(ema_fifteen_minute_df.index)):
-                if ema_fifteen_minute_df.iloc[i]['high'] <= ema_fifteen_minute_df.iloc[i]['max_value'] and \
-                        ema_fifteen_minute_df.iloc[i]['low'] >= ema_fifteen_minute_df.iloc[i]['min_value']:
-                    count += 1
 
-            if count / len(ema_fifteen_minute_df.index) >= 0.95:
-                catch_95 = True
-                break
-
-            coefficient += 0.0005
-
-        if catch_95:
-            fig = plt.figure(1, figsize=(6, 4))
-            ax = fig.add_subplot(111)
-            ax.plot(ema_fifteen_minute_df['start_time'], ema_fifteen_minute_df['close'], 'r-,', label='close')
-            ax.plot(ema_fifteen_minute_df['start_time'], ema_fifteen_minute_df['ema'], 'b-,', label='ema')
-            ax.plot(ema_fifteen_minute_df['start_time'], ema_fifteen_minute_df['min_value'], 'g-,', label='min')
-            ax.plot(ema_fifteen_minute_df['start_time'], ema_fifteen_minute_df['max_value'], 'k-,', label='max')
-            ax.legend(loc=3)
-            plt.show()
