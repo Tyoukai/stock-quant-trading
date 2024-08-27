@@ -50,11 +50,11 @@ if __name__ == '__main__':
                'UNIUSDT', 'PEPEUSDT', 'ICPUSDT', 'APTUSDT', 'WBETHUSDT', 'ETCUSDT', 'SUIUSDT', 'STXUSDT',
                'FETUSDT', 'FILUSDT']
     for symbol in symbols:
-        fifteen_minute_df = get_latest_k_line(symbol, '15m', 66, int(datetime.datetime.now().timestamp() * 1000))
+        fifteen_minute_df = get_latest_k_line(symbol, '15m', 88, int(datetime.datetime.now().timestamp() * 1000))
         fifteen_minute_df['close'] = fifteen_minute_df['close'].astype(float)
         fifteen_minute_df['low'] = fifteen_minute_df['low'].astype(float)
         fifteen_minute_df['high'] = fifteen_minute_df['high'].astype(float)
-        ema_fifteen_minute_df = ema(fifteen_minute_df, 6, 'close')
+        ema_fifteen_minute_df = ema(fifteen_minute_df, 22, 'close')
         # 根据ema计算价格通道，找出符合条件的轨道系数
         ema_fifteen_minute_df = calculate_coefficient(True, ema_fifteen_minute_df, symbol, 0.0001)
         show_chart(ema_fifteen_minute_df)
