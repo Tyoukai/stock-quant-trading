@@ -5,7 +5,7 @@ from base_api import get_latest_k_line
 from moving_average import ema
 
 
-def show_chart(df_local):
+def show_chart(df_local, symbol_local):
     fig = plt.figure(1, figsize=(6, 4))
     ax = fig.add_subplot(111)
     ax.plot(ema_fifteen_minute_df['start_time'], ema_fifteen_minute_df['close'], 'r-,', label='close')
@@ -13,6 +13,7 @@ def show_chart(df_local):
     ax.plot(ema_fifteen_minute_df['start_time'], ema_fifteen_minute_df['min_value'], 'g-,', label='min')
     ax.plot(ema_fifteen_minute_df['start_time'], ema_fifteen_minute_df['max_value'], 'k-,', label='max')
     ax.legend(loc=3)
+    plt.title(label=symbol_local)
     plt.show()
 
 
@@ -28,11 +29,15 @@ def calculate_coefficient(if_loop, df_local, symbol_local, coefficient_local):
                 count += 1
 
         if not if_loop:
-            print(symbol_local, coefficient_local, count / len(df_local.index), len(df_local.index), sep=':')
+            last_index = len(df_local.index) - 1
+            print(symbol_local, coefficient_local, df_local['min_value'][last_index], df_local['max_value'][last_index],
+                  df_local['close'][last_index], sep=':')
             return df_local
 
         if count / len(df_local.index) >= 0.95:
-            print(symbol_local, coefficient_local, count / len(df_local.index), len(df_local.index), sep=':')
+            last_index = len(df_local.index) - 1
+            print(symbol_local, coefficient_local, df_local['min_value'][last_index], df_local['max_value'][last_index],
+                  df_local['close'][last_index], sep=':')
             return df_local
         coefficient_local += 0.0001
     return df_local
@@ -57,6 +62,6 @@ if __name__ == '__main__':
         ema_fifteen_minute_df = ema(fifteen_minute_df, 22, 'close')
         # 根据ema计算价格通道，找出符合条件的轨道系数
         ema_fifteen_minute_df = calculate_coefficient(True, ema_fifteen_minute_df, symbol, 0.0001)
-        show_chart(ema_fifteen_minute_df)
+        show_chart(ema_fifteen_minute_df, symbol)
 
 
