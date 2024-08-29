@@ -85,12 +85,12 @@ if __name__ == '__main__':
     """
     rsi计算法，找出当前存在价格背离的代币
     """
-    symbols = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT', 'SOLUSDT', 'XRPUSDT', 'TONUSDT', 'DOGEUSDT', 'ADAUSDT',
-               'WBTCUSDT', 'AVAXUSDT', 'SHIBUSDT', 'DOTUSDT', 'BCHUSDT', 'LINKUSDT', 'LTCUSDT', 'NEARUSDT', 'MATICUSDT',
-               'UNIUSDT', 'PEPEUSDT', 'ICPUSDT', 'APTUSDT', 'WBETHUSDT', 'ETCUSDT', 'SUIUSDT', 'STXUSDT',
-               'FETUSDT', 'FILUSDT', 'HBARUSDT', 'MKRUSDT', 'IMXUSDT', 'ARBUSDT', 'INJUSDT', 'VETUSDT', 'RENDERUSDT',
-               'ATOMUSDT', 'AAVEUSDT', 'WIFUSDT', 'OPUSDT', 'ARUSDT', 'GRTUSDT', 'BONKUSDT']
-    # symbols = ['ADAUSDT']
+    # symbols = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT', 'SOLUSDT', 'XRPUSDT', 'TONUSDT', 'DOGEUSDT', 'ADAUSDT',
+    #            'WBTCUSDT', 'AVAXUSDT', 'SHIBUSDT', 'DOTUSDT', 'BCHUSDT', 'LINKUSDT', 'LTCUSDT', 'NEARUSDT', 'MATICUSDT',
+    #            'UNIUSDT', 'PEPEUSDT', 'ICPUSDT', 'APTUSDT', 'WBETHUSDT', 'ETCUSDT', 'SUIUSDT', 'STXUSDT',
+    #            'FETUSDT', 'FILUSDT', 'HBARUSDT', 'MKRUSDT', 'IMXUSDT', 'ARBUSDT', 'INJUSDT', 'VETUSDT', 'RENDERUSDT',
+    #            'ATOMUSDT', 'AAVEUSDT', 'WIFUSDT', 'OPUSDT', 'ARUSDT', 'GRTUSDT', 'BONKUSDT']
+    symbols = ['ETHUSDT']
 
     for symbol in symbols:
         interval = '15m'
@@ -104,7 +104,9 @@ if __name__ == '__main__':
         # kline = client.klines(symbol=symbol, interval=interval, startTime=startTime, endTime=endTime)
         # df = pd.DataFrame(kline, columns=['start_time', 'open', 'high', 'low', 'close', 'vol', 'end_time', 'amount', 'num', '1', '2', '3'])
 
-        df = get_latest_k_line(symbol, interval, coin_cycle + rsi_calculate_cycle, endTime)
+        result, df = get_latest_k_line(symbol, interval, coin_cycle + rsi_calculate_cycle, endTime)
+        if not result:
+            continue
         df_rsi = calculate_rsi(df, rsi_calculate_cycle)
         # print('running')
         if hit_feature(df_rsi):

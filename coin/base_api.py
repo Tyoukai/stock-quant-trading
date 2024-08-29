@@ -30,8 +30,13 @@ def get_latest_k_line(symbol_local, interval_local, max_delta, end_time):
                 tmp_end_time = end_time
             else:
                 tmp_end_time = start_time + i * 1000 * one_minute_unit + 1000 * one_minute_unit
-            k_line = client.klines(symbol=symbol_local, interval='1m', startTime=tmp_start_time, endTime=tmp_end_time,
-                                   limit=1000)
+            k_line = None
+            try:
+                k_line = client.klines(symbol=symbol_local, interval='1m', startTime=tmp_start_time,
+                                       endTime=tmp_end_time,
+                                       limit=1000)
+            except BaseException:
+                return False, pd.DataFrame()
             one_shard_minute_df = pd.DataFrame(k_line, columns=['start_time', 'open', 'high', 'low', 'close', 'vol',
                                                                 'end_time', 'amount', 'num', '1', '2', '3'])
             if one_minute_df is None:
@@ -66,5 +71,5 @@ def get_latest_k_line(symbol_local, interval_local, max_delta, end_time):
         fifteen_minute_df['close'] = fifteen_minute_df['close'].astype(str)
         fifteen_minute_df['low'] = fifteen_minute_df['low'].astype(str)
         fifteen_minute_df['high'] = fifteen_minute_df['high'].astype(str)
-        return fifteen_minute_df
-    return pd.DataFrame()
+        return True, fifteen_minute_df
+    return False, pd.DataFrame()
