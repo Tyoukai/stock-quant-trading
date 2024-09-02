@@ -50,11 +50,11 @@ if __name__ == '__main__':
     下轨线 = EMA - EMA * 轨道系数
     一般要求，将近期价格点位的95%包含在轨道内部，即两倍标准差
     """
-    # symbols = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT', 'SOLUSDT', 'XRPUSDT', 'TONUSDT', 'DOGEUSDT', 'ADAUSDT',
-    #            'WBTCUSDT', 'AVAXUSDT', 'SHIBUSDT', 'DOTUSDT', 'BCHUSDT', 'LINKUSDT', 'LTCUSDT', 'NEARUSDT', 'MATICUSDT',
-    #            'UNIUSDT', 'PEPEUSDT', 'ICPUSDT', 'APTUSDT', 'WBETHUSDT', 'ETCUSDT', 'SUIUSDT', 'STXUSDT',
-    #            'FETUSDT', 'FILUSDT']
-    symbols = ['WBTCUSDT']
+    symbols = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT', 'SOLUSDT', 'XRPUSDT', 'TONUSDT', 'DOGEUSDT', 'ADAUSDT',
+               'WBTCUSDT', 'AVAXUSDT', 'SHIBUSDT', 'DOTUSDT', 'BCHUSDT', 'LINKUSDT', 'LTCUSDT', 'NEARUSDT', 'MATICUSDT',
+               'UNIUSDT', 'PEPEUSDT', 'ICPUSDT', 'APTUSDT', 'WBETHUSDT', 'ETCUSDT', 'SUIUSDT', 'STXUSDT',
+               'FETUSDT', 'FILUSDT']
+    # symbols = ['WBTCUSDT']
     for symbol in symbols:
         result, fifteen_minute_df = get_latest_k_line(symbol, '15m', 67, int(datetime.datetime.now().timestamp() * 1000))
         if not result:
@@ -62,9 +62,9 @@ if __name__ == '__main__':
         fifteen_minute_df['close'] = fifteen_minute_df['close'].astype(float)
         fifteen_minute_df['low'] = fifteen_minute_df['low'].astype(float)
         fifteen_minute_df['high'] = fifteen_minute_df['high'].astype(float)
-        ema_fifteen_minute_df = ema(fifteen_minute_df, 22, 'close')
+        ema_fifteen_minute_df = ema(fifteen_minute_df, 13, 'close')
         # 根据ema计算价格通道，找出符合条件的轨道系数
-        ema_fifteen_minute_df = calculate_coefficient(False, ema_fifteen_minute_df, symbol, 0.0071)
+        ema_fifteen_minute_df = calculate_coefficient(True, ema_fifteen_minute_df, symbol, 0.0001)
         show_chart(ema_fifteen_minute_df, symbol)
 
 
