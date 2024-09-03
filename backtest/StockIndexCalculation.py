@@ -4,11 +4,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def caculate_ATR(stock_df, N):
+def calculate_TR(stock_df):
     """
-    计算单只股票ATR变化情况
-    :param stock_df: 股票情况，参数值：close, high, low
-    :param N: 周期
+    计算真实波动幅度TR（true range）
+    max(今日最高价 - 今日最低价, abs(今日最高价 - 昨日收盘价), abs(今日最低价 - 昨日收盘价))
+    :param stock_df:
     :return:
     """
     stock_df['high_low'] = stock_df.apply(lambda x: abs(x['high'] - x['low']), axis=1)
@@ -16,8 +16,17 @@ def caculate_ATR(stock_df, N):
     stock_df['pre_close_high'] = stock_df.apply(lambda x: abs(x['close_shift'] - x['high']), axis=1)
     stock_df['pre_close_low'] = stock_df.apply(lambda x: abs(x['close_shift'] - x['low']), axis=1)
     stock_df['TR'] = stock_df.apply(lambda x: max(x['high_low'], x['pre_close_high'], x['pre_close_low']), axis=1)
-    stock_df['ATR'] = np.zeros(len(stock_df.index))
+    stock_df = stock_df.drop(['high_low', 'close_shift', 'pre_close_high', 'pre_close_low'], axis=1)
+    return stock_df
 
+
+def caculate_ATR(stock_df, N):
+    """
+    计算单只股票ATR变化情况
+    :param stock_df: 股票情况，参数值：close, high, low
+    :param N: 周期
+    :return:
+    """
     for i in range(N, len(stock_df.index)):
         stock_df['ATR'].iloc[i] = np.mean(stock_df['TR'].iloc[i-N+1:i+1])
     stock_df.drop(['close_shift', 'high_low', 'pre_close_high', 'pre_close_low', 'TR'], axis=1)
