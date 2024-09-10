@@ -1,6 +1,10 @@
+import time
+import datetime
 
-
-time = 1723253403000
-unit = 15 * 60 * 1000
-print(time % unit)
-print(11 // 10)
+a = 172325340300
+c = datetime.datetime.utcfromtimestamp(a).strftime('%d.%m.%Y %H:%M:%S')
+print(type(c))
+print(c)
+b = time.localtime(a).strftime("%d.%m.%Y %H:%M:%S")
+print(type(b))
+print(b)

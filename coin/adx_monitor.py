@@ -1,6 +1,9 @@
 import numpy as np
 import datetime
+import time
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
+import pandas as pd
 
 from base_api import get_latest_k_line
 from backtest.StockIndexCalculation import calculate_TR
@@ -60,14 +63,19 @@ def calculate_adx(df_local, n):
 
 
 def draw(df_local, symbol_local):
-    fig = plt.figure(1, figsize=(6, 4))
+    df_local['start_time'] = df_local['start_time'].astype('str')
+    fig = plt.figure(1, figsize=(15, 7))
     ax = fig.add_subplot(111)
     # ax.plot(df_local['start_time'], df_local['close'], 'r-,', label='close')
     ax.plot(df_local['start_time'], df_local['di_plus_n'], 'b-,', label='di_plus_n')
     ax.plot(df_local['start_time'], df_local['di_minus_n'], 'g-,', label='di_minus_n')
     ax.plot(df_local['start_time'], df_local['adx'], 'k-,', label='adx')
     ax.legend(loc=3)
+    # 只展示5个横坐标
+    plt.gca().xaxis.set_major_locator(ticker.MultipleLocator(5))
     plt.title(label=symbol_local)
+    print(df_local.loc[0, 'start_time'], df_local.loc[len(df_local) // 2, 'start_time'],
+          df_local.loc[len(df_local) - 1, 'start_time'], sep=':')
     plt.show()
 
 
