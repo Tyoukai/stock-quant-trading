@@ -7,13 +7,14 @@ plt.rcParams['font.sans-serif'] = ['SimHei']
 plt.rcParams['axes.unicode_minus'] = False
 figure = plt.figure(1, (10, 8))
 
-apple = [78, 80, 79, 81, 91, 95, 96]
+apple = [88, 80, 79, 81, 91, 95, 96]
 banana = [70, 80, 81, 82, 75, 90, 89]
 x = np.arange(1, 8)
 
 ax1 = figure.add_subplot(111)
 ax1.plot(x, apple, 'r--', label='苹果')
 ax1.set_ylabel('苹果价格')
+ax1.annotate('最低价', xy=(3, 79), xytext=(2, 78), arrowprops=dict(arrowstyle='->', connectionstyle='angle3,angleA=0,angleB=-90'))
 
 ax2 = ax1.twinx()
 ax2.plot(x, banana, 'k-', label='香蕉')
