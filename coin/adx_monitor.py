@@ -77,7 +77,8 @@ def draw(df_local, symbol_local):
     ax.plot(df_local['start_time_str'], df_local['adx'], 'k-,', label='adx')
     ax.legend(loc=3)
     # 只展示5个横坐标
-    plt.gca().xaxis.set_major_locator(ticker.MultipleLocator(5))
+    # plt.gca().xaxis.set_major_locator(ticker.MultipleLocator(5))
+    ax.xaxis.set_major_locator(ticker.MultipleLocator(5))
     plt.title(label=symbol_local)
     print(df_local.loc[0, 'start_time_str'], df_local.loc[len(df_local) // 2, 'start_time_str'],
           df_local.loc[len(df_local) - 1, 'start_time_str'], sep=':')
