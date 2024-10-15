@@ -1,6 +1,8 @@
 import numpy as np
 from binance.spot import Spot
 import pandas as pd
+import time
+import matplotlib.pyplot as plt
 import datetime
 from datetime import timedelta
 
@@ -73,3 +75,26 @@ def get_latest_k_line(symbol_local, interval_local, max_delta, end_time):
         fifteen_minute_df['high'] = fifteen_minute_df['high'].astype(str)
         return True, fifteen_minute_df
     return False, pd.DataFrame()
+
+
+def draw_plot(df_local, according_to_columns, symbol):
+    """
+    通用图形绘制
+    :param df_local: 计算好的df
+    :param according_to_columns: 纵坐标list
+    :param symbol: 对应的币种标识
+    :return:
+    """
+    color_list = ['#F0F8FF', '#FAEBD7', '#00FFFF', '#7FFFD4', '#F0FFFF', '#F5F5DC', '#FFE4C4', '#000000', '#0000FF',
+                  '#A52A2A', '#808080', '#008000', '#00FF00', '#FFC0CB', '#FF0000', '#FFFF00']
+
+    df_local['start_time'] = df_local['start_time'] / 1000
+    df_local['start_time_str'] = np.zeros(len(df_local))
+    df_local['start_time_str'] = df_local['start_time_str'].astype('str')
+    for i in range(len(df_local)):
+        df_local.loc[i, 'start_time_str'] = time.strftime('%Y-%m-%d %H:%M:%S',
+                                                          time.localtime(df_local.iloc[i]['start_time']))
+    fig = plt.figure(1, figsize=(15, 7))
+    ax = fig.add_subplot(111)
+    # for according_to_column in according_to_columns:
+        # ax.plot(df_local['start_time_str'], df_local[according_to_column], color_list[])
