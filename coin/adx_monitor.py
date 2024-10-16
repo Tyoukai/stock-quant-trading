@@ -6,6 +6,7 @@ import matplotlib.ticker as ticker
 import pandas as pd
 
 from base_api import get_latest_k_line
+from base_api import draw_plot
 from backtest.StockIndexCalculation import calculate_TR
 
 
@@ -62,29 +63,6 @@ def calculate_adx(df_local, n):
     return df_local
 
 
-def draw(df_local, symbol_local):
-    df_local['start_time'] = df_local['start_time'] / 1000
-    df_local['start_time_str'] = np.zeros(len(df_local))
-    df_local['start_time_str'] = df_local['start_time_str'].astype('str')
-    for i in range(len(df_local)):
-        df_local.loc[i, 'start_time_str'] = time.strftime('%Y-%m-%d %H:%M:%S',
-                                                          time.localtime(df_local.iloc[i]['start_time']))
-    fig = plt.figure(1, figsize=(15, 7))
-    ax = fig.add_subplot(111)
-    # ax.plot(df_local['start_time'], df_local['close'], 'r-,', label='close')
-    ax.plot(df_local['start_time_str'], df_local['di_plus_n'], 'b-,', label='di_plus_n')
-    ax.plot(df_local['start_time_str'], df_local['di_minus_n'], 'g-,', label='di_minus_n')
-    ax.plot(df_local['start_time_str'], df_local['adx'], 'k-,', label='adx')
-    ax.legend(loc=3)
-    # 只展示5个横坐标
-    # plt.gca().xaxis.set_major_locator(ticker.MultipleLocator(5))
-    ax.xaxis.set_major_locator(plt.MaxNLocator(5))
-    plt.title(label=symbol_local)
-    print(df_local.loc[0, 'start_time_str'], df_local.loc[len(df_local) // 2, 'start_time_str'],
-          df_local.loc[len(df_local) - 1, 'start_time_str'], sep=':')
-    plt.show()
-
-
 if __name__ == '__main__':
     # symbols = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT', 'SOLUSDT', 'XRPUSDT', 'TONUSDT', 'DOGEUSDT', 'ADAUSDT',
     #            'WBTCUSDT', 'AVAXUSDT', 'SHIBUSDT', 'DOTUSDT', 'BCHUSDT', 'LINKUSDT', 'LTCUSDT', 'NEARUSDT', 'MATICUSDT',
@@ -109,4 +87,4 @@ if __name__ == '__main__':
         # 4、计算DI+ DI- DX ADX
         fifteen_minute_df = calculate_adx(fifteen_minute_df, cycle)
         # 7、图形展示
-        draw(fifteen_minute_df, symbol)
+        draw_plot(fifteen_minute_df, ['di_plus_n', 'di_minus_n', 'adx'], symbol)

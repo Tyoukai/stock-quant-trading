@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from moving_average import ema
 from base_api import get_latest_k_line
+from base_api import draw_plot
 import datetime
 
 
@@ -23,11 +24,13 @@ def draw():
 
 
 if __name__ == '__main__':
-    symbols = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT', 'SOLUSDT', 'XRPUSDT', 'TONUSDT', 'DOGEUSDT', 'ADAUSDT',
-               'WBTCUSDT', 'AVAXUSDT', 'SHIBUSDT', 'DOTUSDT', 'BCHUSDT', 'LINKUSDT', 'LTCUSDT', 'NEARUSDT', 'MATICUSDT',
-               'UNIUSDT', 'PEPEUSDT', 'ICPUSDT', 'APTUSDT', 'WBETHUSDT', 'ETCUSDT', 'SUIUSDT', 'STXUSDT',
-               'FETUSDT', 'FILUSDT']
+    # symbols = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT', 'SOLUSDT', 'XRPUSDT', 'TONUSDT', 'DOGEUSDT', 'ADAUSDT',
+    #            'WBTCUSDT', 'AVAXUSDT', 'SHIBUSDT', 'DOTUSDT', 'BCHUSDT', 'LINKUSDT', 'LTCUSDT', 'NEARUSDT', 'MATICUSDT',
+    #            'UNIUSDT', 'PEPEUSDT', 'ICPUSDT', 'APTUSDT', 'WBETHUSDT', 'ETCUSDT', 'SUIUSDT', 'STXUSDT',
+    #            'FETUSDT', 'FILUSDT']
+    symbols = ['BTCUSDT']
     ema_cycle = 13
+    roc_cycle = 7
     # 1、计算指定周期的EMA
     for symbol in symbols:
         result, fifteen_minute_df = get_latest_k_line(symbol, '15m', 120,
@@ -37,7 +40,6 @@ if __name__ == '__main__':
         fifteen_minute_df['close'] = fifteen_minute_df['close'].astype(float)
         fifteen_minute_df = ema(fifteen_minute_df, ema_cycle, 'close')
         # 2、计算S-RoC
-        fifteen_minute_df = calculate_s_roc(fifteen_minute_df)
+        fifteen_minute_df = calculate_s_roc(fifteen_minute_df, roc_cycle)
         # 3、绘制图形
-
-    pass
+        draw_plot(fifteen_minute_df, ['S-RoC'], symbol)

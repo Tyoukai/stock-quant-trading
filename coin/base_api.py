@@ -85,8 +85,7 @@ def draw_plot(df_local, according_to_columns, symbol):
     :param symbol: 对应的币种标识
     :return:
     """
-    color_list = ['#F0F8FF', '#FAEBD7', '#00FFFF', '#7FFFD4', '#F0FFFF', '#F5F5DC', '#FFE4C4', '#000000', '#0000FF',
-                  '#A52A2A', '#808080', '#008000', '#00FF00', '#FFC0CB', '#FF0000', '#FFFF00']
+    color_list = ['#000000', '#0000FF', '#A52A2A', '#808080', '#008000', '#00FF00', '#FFC0CB', '#FF0000', '#FFFF00']
 
     df_local['start_time'] = df_local['start_time'] / 1000
     df_local['start_time_str'] = np.zeros(len(df_local))
