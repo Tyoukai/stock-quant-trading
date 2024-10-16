@@ -96,5 +96,12 @@ def draw_plot(df_local, according_to_columns, symbol):
                                                           time.localtime(df_local.iloc[i]['start_time']))
     fig = plt.figure(1, figsize=(15, 7))
     ax = fig.add_subplot(111)
-    # for according_to_column in according_to_columns:
-        # ax.plot(df_local['start_time_str'], df_local[according_to_column], color_list[])
+    index = 0
+    for according_to_column in according_to_columns:
+        ax.plot(df_local['start_time_str'], df_local[according_to_column],
+                color_list[index], label=according_to_column)
+        index += 1
+    ax.legend(loc=3)
+    ax.xaxis.set_major_locator(plt.MaxNLocator(5))
+    plt.title(label=symbol)
+    plt.show()
