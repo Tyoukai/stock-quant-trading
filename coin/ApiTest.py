@@ -1,6 +1,7 @@
 import datetime
 
 from binance.spot import Spot
+import pandas as pd
 
 
 # https://api.binance.com
@@ -34,6 +35,7 @@ client = Spot(base_url='https://api4.binance.com')
 #     "17928899.62484339" // 请忽略该参数
 #   ]
 # ]
-kline = client.klines(symbol='BTCUSDT', interval='1h', startTime=1721964984000, endTime=1722051384000, limit=50)
+kline = client.klines(symbol='BTCUSDT', interval='8h', startTime=1727783908000, endTime=1729166315789, limit=50)
+df = pd.DataFrame(kline)
 print(kline)
 

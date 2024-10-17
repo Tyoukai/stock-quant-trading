@@ -74,6 +74,8 @@ def get_latest_k_line(symbol_local, interval_local, max_delta, end_time):
         fifteen_minute_df['low'] = fifteen_minute_df['low'].astype(str)
         fifteen_minute_df['high'] = fifteen_minute_df['high'].astype(str)
         return True, fifteen_minute_df
+    if interval_local == '1d':
+        pass
     return False, pd.DataFrame()
 
 
