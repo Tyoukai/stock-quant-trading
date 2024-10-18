@@ -70,12 +70,18 @@ def get_latest_k_line(symbol_local, interval_local, max_delta, end_time):
             fifteen_minute_df.loc[i, 'close'] = close
             fifteen_minute_df.loc[i, 'high'] = high
             fifteen_minute_df.loc[i, 'low'] = min_low
-        fifteen_minute_df['close'] = fifteen_minute_df['close'].astype(str)
-        fifteen_minute_df['low'] = fifteen_minute_df['low'].astype(str)
-        fifteen_minute_df['high'] = fifteen_minute_df['high'].astype(str)
         return True, fifteen_minute_df
     if interval_local == '1d':
-        pass
+        start_time = end_time - max_delta * 24 * 3600 * 1000
+        k_line = None
+        try:
+            k_line = client.klines(symbol=symbol_local, interval='1m', startTime=start_time, endTime=end_time,
+                                   limit=1000)
+        except BaseException:
+            return False, pd.DataFrame()
+        one_day_df = pd.DataFrame(k_line, columns=['start_time', 'open', 'high', 'low', 'close', 'vol', 'end_time',
+                                                   'amount', 'num', '1', '2', '3'])
+        return True, one_day_df
     return False, pd.DataFrame()
 
 

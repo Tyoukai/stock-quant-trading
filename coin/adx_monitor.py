@@ -77,9 +77,6 @@ if __name__ == '__main__':
                                                       int(datetime.datetime.now().timestamp() * 1000))
         if not result:
             continue
-        fifteen_minute_df['close'] = fifteen_minute_df['close'].astype(float)
-        fifteen_minute_df['low'] = fifteen_minute_df['low'].astype(float)
-        fifteen_minute_df['high'] = fifteen_minute_df['high'].astype(float)
         # 2、计算TR
         fifteen_minute_df = calculate_TR(fifteen_minute_df)
         # 3、计算DM+ DM-

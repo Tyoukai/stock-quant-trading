@@ -12,7 +12,6 @@ def calculate_rsi(df_calculate, cycle):
     :param cycle:
     :return:
     """
-    df_calculate['close'] = df_calculate['close'].astype('float')
     df_calculate['cha'] = df_calculate['close'] - df_calculate['close'].shift(1)
     df_calculate['cha'] = df_calculate['cha'].fillna(0.0)
     df_calculate['rsi'] = np.zeros(len(df_calculate.index))

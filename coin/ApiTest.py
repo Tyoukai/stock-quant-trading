@@ -35,7 +35,7 @@ client = Spot(base_url='https://api4.binance.com')
 #     "17928899.62484339" // 请忽略该参数
 #   ]
 # ]
-kline = client.klines(symbol='BTCUSDT', interval='8h', startTime=1727783908000, endTime=1729166315789, limit=50)
+kline = client.klines(symbol='BTCUSDT', interval='1d', startTime=1729123200000, endTime=1729240751572, limit=50)
 df = pd.DataFrame(kline)
 print(kline)
 
