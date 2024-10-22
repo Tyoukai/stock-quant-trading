@@ -33,7 +33,7 @@ if __name__ == '__main__':
     roc_cycle = 7
     # 1、计算指定周期的EMA
     for symbol in symbols:
-        result, fifteen_minute_df = get_latest_k_line(symbol, '15m', 120,
+        result, fifteen_minute_df = get_latest_k_line(symbol, '1d', 120,
                                                       int(datetime.datetime.now().timestamp() * 1000))
         if not result:
             continue

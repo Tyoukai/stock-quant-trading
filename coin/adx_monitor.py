@@ -60,6 +60,7 @@ def calculate_adx(df_local, n):
     df_local.loc[n - 1, 'adx'] = np.mean(df_local['adx'].iloc[0:n])
     for i in range(n, len(df_local.index)):
         df_local.loc[i, 'adx'] = (df_local.iloc[i - 1]['adx'] * (n - 1) + df_local.loc[i]['dx']) / n
+    df_local = df_local.dropna(axis=0, how='any').reset_index(drop=True)
     return df_local
 
 
@@ -73,7 +74,7 @@ if __name__ == '__main__':
     cycle = 13
     for symbol in symbols:
         # 1、获取指定分钟k线图
-        result, fifteen_minute_df = get_latest_k_line(symbol, '15m', 120,
+        result, fifteen_minute_df = get_latest_k_line(symbol, '1d', 120,
                                                       int(datetime.datetime.now().timestamp() * 1000))
         if not result:
             continue

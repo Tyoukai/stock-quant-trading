@@ -75,12 +75,19 @@ def get_latest_k_line(symbol_local, interval_local, max_delta, end_time):
         start_time = end_time - max_delta * 24 * 3600 * 1000
         k_line = None
         try:
-            k_line = client.klines(symbol=symbol_local, interval='1m', startTime=start_time, endTime=end_time,
+            k_line = client.klines(symbol=symbol_local, interval='1d', startTime=start_time, endTime=end_time,
                                    limit=1000)
         except BaseException:
             return False, pd.DataFrame()
         one_day_df = pd.DataFrame(k_line, columns=['start_time', 'open', 'high', 'low', 'close', 'vol', 'end_time',
                                                    'amount', 'num', '1', '2', '3'])
+        one_day_df['open'] = one_day_df['open'].astype(float)
+        one_day_df['high'] = one_day_df['high'].astype(float)
+        one_day_df['low'] = one_day_df['low'].astype(float)
+        one_day_df['close'] = one_day_df['close'].astype(float)
+        one_day_df['vol'] = one_day_df['vol'].astype(float)
+        one_day_df['amount'] = one_day_df['amount'].astype(float)
+        one_day_df['num'] = one_day_df['num'].astype(float)
         return True, one_day_df
     return False, pd.DataFrame()
 
@@ -109,6 +116,6 @@ def draw_plot(df_local, according_to_columns, symbol):
                 color_list[index], label=according_to_column)
         index += 1
     ax.legend(loc=3)
-    ax.xaxis.set_major_locator(plt.MaxNLocator(5))
+    ax.xaxis.set_major_locator(plt.MaxNLocator(7))
     plt.title(label=symbol)
     plt.show()
