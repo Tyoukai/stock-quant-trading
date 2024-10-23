@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from moving_average import ema
 from base_api import get_latest_k_line
-from base_api import draw_plot
+from base_api import draw_plot_day
 import datetime
 
 
@@ -42,4 +42,4 @@ if __name__ == '__main__':
         # 2、计算S-RoC
         fifteen_minute_df = calculate_s_roc(fifteen_minute_df, roc_cycle)
         # 3、绘制图形
-        draw_plot(fifteen_minute_df, ['S-RoC'], symbol)
+        draw_plot_day(fifteen_minute_df, ['S-RoC'], symbol)

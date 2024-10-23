@@ -6,7 +6,7 @@ import matplotlib.ticker as ticker
 import pandas as pd
 
 from base_api import get_latest_k_line
-from base_api import draw_plot
+from base_api import draw_plot_day
 from backtest.StockIndexCalculation import calculate_TR
 
 
@@ -85,4 +85,4 @@ if __name__ == '__main__':
         # 4、计算DI+ DI- DX ADX
         fifteen_minute_df = calculate_adx(fifteen_minute_df, cycle)
         # 7、图形展示
-        draw_plot(fifteen_minute_df, ['di_plus_n', 'di_minus_n', 'adx'], symbol)
+        draw_plot_day(fifteen_minute_df, ['di_plus_n', 'di_minus_n', 'adx'], symbol)

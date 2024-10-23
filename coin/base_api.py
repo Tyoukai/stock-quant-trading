@@ -1,10 +1,9 @@
 import numpy as np
 from binance.spot import Spot
 import pandas as pd
-import time
 import matplotlib.pyplot as plt
 import datetime
-from datetime import timedelta
+from matplotlib.dates import DayLocator, drange
 
 
 def get_latest_k_line(symbol_local, interval_local, max_delta, end_time):
@@ -92,9 +91,9 @@ def get_latest_k_line(symbol_local, interval_local, max_delta, end_time):
     return False, pd.DataFrame()
 
 
-def draw_plot(df_local, according_to_columns, symbol):
+def draw_plot_day(df_local, according_to_columns, symbol):
     """
-    通用图形绘制
+    绘制日级别的通用图形
     :param df_local: 计算好的df
     :param according_to_columns: 纵坐标list
     :param symbol: 对应的币种标识
@@ -103,19 +102,21 @@ def draw_plot(df_local, according_to_columns, symbol):
     color_list = ['#000000', '#0000FF', '#A52A2A', '#808080', '#008000', '#00FF00', '#FFC0CB', '#FF0000', '#FFFF00']
 
     df_local['start_time'] = df_local['start_time'] / 1000
+    start_time = datetime.datetime.strptime(df_local['start_time', 0], '%Y-%m-%d')
+    end_time = datetime.datetime.strptime(df_local['start_time', len(df_local.index) - 1], '%Y-%m-%d')
+    delta = datetime.timedelta(days=1)
+    dates = drange(start_time, end_time, delta)
     df_local['start_time_str'] = np.zeros(len(df_local))
     df_local['start_time_str'] = df_local['start_time_str'].astype('str')
-    for i in range(len(df_local)):
-        df_local.loc[i, 'start_time_str'] = time.strftime('%Y-%m-%d %H:%M:%S',
-                                                          time.localtime(df_local.iloc[i]['start_time']))
+
     fig = plt.figure(1, figsize=(15, 7))
     ax = fig.add_subplot(111)
     index = 0
     for according_to_column in according_to_columns:
-        ax.plot(df_local['start_time_str'], df_local[according_to_column],
-                color_list[index], label=according_to_column)
+        ax.plot_date(dates, df_local[according_to_column], color_list[index], label=according_to_column)
         index += 1
     ax.legend(loc=3)
     ax.xaxis.set_major_locator(plt.MaxNLocator(7))
+    ax.xaxis.set_minor_locator(DayLocator())
     plt.title(label=symbol)
     plt.show()
