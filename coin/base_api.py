@@ -102,8 +102,8 @@ def draw_plot_day(df_local, according_to_columns, symbol):
     color_list = ['#000000', '#0000FF', '#A52A2A', '#808080', '#008000', '#00FF00', '#FFC0CB', '#FF0000', '#FFFF00']
 
     df_local['start_time'] = df_local['start_time'] / 1000
-    start_time = datetime.datetime.strptime(df_local['start_time', 0], '%Y-%m-%d')
-    end_time = datetime.datetime.strptime(df_local['start_time', len(df_local.index) - 1], '%Y-%m-%d')
+    start_time = datetime.datetime.fromtimestamp(int(df_local['start_time'][0]))
+    end_time = datetime.datetime.fromtimestamp(int(df_local['start_time'][len(df_local.index) - 1]))
     delta = datetime.timedelta(days=1)
     dates = drange(start_time, end_time, delta)
     df_local['start_time_str'] = np.zeros(len(df_local))

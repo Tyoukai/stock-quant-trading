@@ -11,10 +11,10 @@ def calculate_a_back_slash_b(local_df):
 
 
 if __name__ == '__main__':
-    symbols = []
+    symbols = ['BTCUSDT']
     for symbol in symbols:
         # 1、获取K线
-        result, one_day_df = get_latest_k_line(symbol, '1d', 120, datetime.datetime.now().timestamp() * 1000)
+        result, one_day_df = get_latest_k_line(symbol, '1d', 120, int(datetime.datetime.now().timestamp() * 1000))
         if not result:
             continue
         # 2、计算a/b指标
