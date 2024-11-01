@@ -106,8 +106,6 @@ def draw_plot_day(df_local, according_to_columns, symbol):
     end_time = datetime.datetime.fromtimestamp(int(df_local['start_time'][len(df_local.index) - 1]))
     delta = datetime.timedelta(days=1)
     dates = drange(start_time, end_time, delta)
-    df_local['start_time_str'] = np.zeros(len(df_local))
-    df_local['start_time_str'] = df_local['start_time_str'].astype('str')
 
     fig = plt.figure(1, figsize=(15, 7))
     ax = fig.add_subplot(111)
