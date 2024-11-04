@@ -103,9 +103,11 @@ def draw_plot_day(df_local, according_to_columns, symbol):
 
     df_local['start_time'] = df_local['start_time'] / 1000
     start_time = datetime.datetime.fromtimestamp(int(df_local['start_time'][0]))
-    end_time = datetime.datetime.fromtimestamp(int(df_local['start_time'][len(df_local.index) - 1]))
-    delta = datetime.timedelta(days=1)
-    dates = drange(start_time, end_time, delta)
+    start_time_str = datetime.datetime.strftime(start_time, '%Y%m%d')
+    dates_str_list = pd.date_range(start=start_time_str, periods=len(df_local.index), freq='1d').strftime('%Y-%m-%d').tolist()
+    dates = []
+    for date_str_list in dates_str_list:
+        dates.append(datetime.datetime.strptime(date_str_list, '%Y-%m-%d'))
 
     fig = plt.figure(1, figsize=(15, 7))
     ax = fig.add_subplot(111)
@@ -114,7 +116,8 @@ def draw_plot_day(df_local, according_to_columns, symbol):
         ax.plot_date(dates, df_local[according_to_column], color_list[index], label=according_to_column)
         index += 1
     ax.legend(loc=3)
-    ax.xaxis.set_major_locator(plt.MaxNLocator(7))
+    ax.xaxis.set_major_locator(plt.MaxNLocator(20))
     ax.xaxis.set_minor_locator(DayLocator())
     plt.title(label=symbol)
+    plt.xticks(rotation=30)
     plt.show()
