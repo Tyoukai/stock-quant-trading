@@ -2,6 +2,8 @@ import numpy as np
 from base_api import get_latest_k_line
 from moving_average import ema
 import datetime
+import mplfinance as mpl
+import pandas as pd
 
 
 def calculate_perspective_index(local_df, cycle):
@@ -15,7 +17,22 @@ def calculate_perspective_index(local_df, cycle):
 
 
 def draw(local_df, symbol):
-    pass
+    local_df['start_time'] = local_df['start_time'] / 1000
+    start_time = datetime.datetime.fromtimestamp(int(local_df['start_time'][0]))
+    start_time_str = datetime.datetime.strftime(start_time, '%Y%m%d')
+    dates_str_list = pd.date_range(start=start_time_str, periods=len(local_df.index), freq='1d').strftime(
+        '%Y-%m-%d').tolist()
+
+    local_df.set_index(dates_str_list, inplace=True)
+    add_plot = [
+        mpl.make_addplot(local_df['bull_power'], type='bar', color='#00FF00', panel=1),
+        mpl.make_addplot(local_df['bear_power'], type='bar', color='#FF3030', panel=2)
+    ]
+    my_color = mpl.make_marketcolors(up='#00FF00', down='#FF3030', inherit=True, volume='inherit')
+    my_style = mpl.make_mpf_style(marketcolors=my_color, gridaxis='both', gridstyle='-.', y_on_right=False)
+
+    mpl.plot(local_df, type='candle', datetime_format='%Y-%m-%d', style=my_style,
+             mav=(7, 13, 26), addplot=add_plot, title=symbol)
 
 
 if __name__ == '__main__':
