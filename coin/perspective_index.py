@@ -23,7 +23,8 @@ def draw(local_df, symbol):
     dates_str_list = pd.date_range(start=start_time_str, periods=len(local_df.index), freq='1d').strftime(
         '%Y-%m-%d').tolist()
 
-    local_df.set_index(dates_str_list, inplace=True)
+    local_df.index = pd.DatetimeIndex(dates_str_list)
+    # local_df.set_index(dates_str_list, inplace=True)
     add_plot = [
         mpl.make_addplot(local_df['bull_power'], type='bar', color='#00FF00', panel=1),
         mpl.make_addplot(local_df['bear_power'], type='bar', color='#FF3030', panel=2)
@@ -32,11 +33,11 @@ def draw(local_df, symbol):
     my_style = mpl.make_mpf_style(marketcolors=my_color, gridaxis='both', gridstyle='-.', y_on_right=False)
 
     mpl.plot(local_df, type='candle', datetime_format='%Y-%m-%d', style=my_style,
-             mav=(7, 13, 26), addplot=add_plot, title=symbol)
+             mav=(13), addplot=add_plot, title=symbol)
 
 
 if __name__ == '__main__':
-    symbols = ['']
+    symbols = ['BTCUSDT']
     for symbol in symbols:
         # 1、获取制定的K线信息
         result, one_day_df = get_latest_k_line(symbol, '1d', 120, int(datetime.datetime.now().timestamp() * 1000))
@@ -45,6 +46,5 @@ if __name__ == '__main__':
         # 2、计算透视指标
         calculated_one_day_df = calculate_perspective_index(one_day_df, 13)
         # 3、绘制图形
+        draw(calculated_one_day_df, symbol)
 
-        pass
-    pass

@@ -69,18 +69,18 @@ mpf.plot(df, type='candle', style='charles', mav=(5, 8, 13), volume=True)
 # mpf.plot(df, type='candle', mav=(5, 8, 13), volume=True, style=my_style, title='title', ylabel_lower='volume')
 
 # 5、设置子图
-df = cf.datagen.ohlc()
-df['volume'] = abs(df['low'] * 1000)
-df['middle'] = (df['low'] + df['high']) / 2.0
-df['up'] = df['high'] * 1.2
-df['down'] = df['low'] * 0.8
-
-add_plot = [
-    mpf.make_addplot(df['up'], type='line', color='k'),
-    mpf.make_addplot(df['down'], type='line', color='r'),
-    mpf.make_addplot(df['volume'], type='bar', color='b', panel=1),
-    mpf.make_addplot(df['middle'], type='bar', color='k', panel=2)
-]
-
-mpf.plot(df, type='candle', addplot=add_plot, datetime_format='%Y-%m-%d',
-         panel_ratios=(1, 0.3, 0.3))
+# df = cf.datagen.ohlc()
+# df['volume'] = abs(df['low'] * 1000)
+# df['middle'] = (df['low'] + df['high']) / 2.0
+# df['up'] = df['high'] * 1.2
+# df['down'] = df['low'] * 0.8
+#
+# add_plot = [
+#     mpf.make_addplot(df['up'], type='line', color='k'),
+#     mpf.make_addplot(df['down'], type='line', color='r'),
+#     mpf.make_addplot(df['volume'], type='bar', color='b', panel=1),
+#     mpf.make_addplot(df['middle'], type='bar', color='k', panel=2)
+# ]
+#
+# mpf.plot(df, type='candle', addplot=add_plot, datetime_format='%Y-%m-%d',
+#          panel_ratios=(1, 0.3, 0.3))
