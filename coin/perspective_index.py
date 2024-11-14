@@ -37,6 +37,9 @@ def draw(local_df, symbol):
 
 
 if __name__ == '__main__':
+    """
+    透视指标
+    """
     symbols = ['BTCUSDT']
     for symbol in symbols:
         # 1、获取制定的K线信息

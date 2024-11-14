@@ -11,6 +11,9 @@ def calculate_a_back_slash_b(local_df):
 
 
 if __name__ == '__main__':
+    """
+    a/d指标
+    """
     symbols = ['BTCUSDT']
     for symbol in symbols:
         # 1、获取K线
