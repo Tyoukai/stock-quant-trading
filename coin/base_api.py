@@ -4,6 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import datetime
 from matplotlib.dates import DayLocator, drange
+import mplfinance as mpl
 
 
 def get_latest_k_line(symbol_local, interval_local, max_delta, end_time):
@@ -78,15 +79,23 @@ def get_latest_k_line(symbol_local, interval_local, max_delta, end_time):
                                    limit=1000)
         except BaseException:
             return False, pd.DataFrame()
-        one_day_df = pd.DataFrame(k_line, columns=['start_time', 'open', 'high', 'low', 'close', 'vol', 'end_time',
+        one_day_df = pd.DataFrame(k_line, columns=['start_time', 'open', 'high', 'low', 'close', 'volume', 'end_time',
                                                    'amount', 'num', '1', '2', '3'])
         one_day_df['open'] = one_day_df['open'].astype(float)
         one_day_df['high'] = one_day_df['high'].astype(float)
         one_day_df['low'] = one_day_df['low'].astype(float)
         one_day_df['close'] = one_day_df['close'].astype(float)
-        one_day_df['vol'] = one_day_df['vol'].astype(float)
+        one_day_df['volume'] = one_day_df['volume'].astype(float)
         one_day_df['amount'] = one_day_df['amount'].astype(float)
         one_day_df['num'] = one_day_df['num'].astype(float)
+
+        one_day_df['start_time'] = one_day_df['start_time'] / 1000
+        start_time = datetime.datetime.fromtimestamp(int(one_day_df['start_time'][0]))
+        start_time_str = datetime.datetime.strftime(start_time, '%Y%m%d')
+        dates_str_list = pd.date_range(start=start_time_str, periods=len(one_day_df.index), freq='1d').strftime(
+            '%Y-%m-%d').tolist()
+        one_day_df['start_time_format'] = dates_str_list
+
         return True, one_day_df
     return False, pd.DataFrame()
 
@@ -121,3 +130,19 @@ def draw_plot_day(df_local, according_to_columns, symbol):
     plt.title(label=symbol)
     plt.xticks(rotation=30)
     plt.show()
+
+
+def draw_one_day_with_mpl(local_df, add_plot, symbol, mav):
+    """
+    通过mpl绘制k线图
+    :param local_df:
+    :param add_plot: 绘制图形的plot
+    :param symbol: 符号
+    :param mav: 所要显示的移动平均线周期，传入元组
+    :return:
+    """
+    my_color = mpl.make_marketcolors(up='#00FF00', down='#FF3030', inherit=True, volume='inherit')
+    my_style = mpl.make_mpf_style(marketcolors=my_color, gridaxis='both', gridstyle='-.', y_on_right=False)
+    mpl.plot(local_df, type='candle', datetime_format='%Y-%m-%d', style=my_style,
+             mav=mav, addplot=add_plot, title=symbol)
+
