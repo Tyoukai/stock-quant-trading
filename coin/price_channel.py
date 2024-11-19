@@ -17,10 +17,10 @@ def show_chart(df_local, symbol_local):
     plt.show()
 
 
-def calculate_coefficient(if_loop, df_local, symbol_local, coefficient_local):
+def calculate_coefficient(if_loop, df_local, symbol_local, coefficient_local, ema_name):
     while coefficient_local < 1.0:
-        df_local['min_value'] = df_local['ema'] * (1 - coefficient_local)
-        df_local['max_value'] = df_local['ema'] * (1 + coefficient_local)
+        df_local['min_value'] = df_local[ema_name] * (1 - coefficient_local)
+        df_local['max_value'] = df_local[ema_name] * (1 + coefficient_local)
 
         count = 0.0
         for i in range(0, len(df_local.index)):
@@ -59,9 +59,9 @@ if __name__ == '__main__':
         result, fifteen_minute_df = get_latest_k_line(symbol, '15m', 67, int(datetime.datetime.now().timestamp() * 1000))
         if not result:
             continue
-        ema_fifteen_minute_df = ema(fifteen_minute_df, 13, 'close')
+        ema_fifteen_minute_df, ema_name = ema(fifteen_minute_df, 13, 'close')
         # 根据ema计算价格通道，找出符合条件的轨道系数
-        ema_fifteen_minute_df = calculate_coefficient(True, ema_fifteen_minute_df, symbol, 0.0001)
+        ema_fifteen_minute_df = calculate_coefficient(True, ema_fifteen_minute_df, symbol, 0.0001, ema_name)
         show_chart(ema_fifteen_minute_df, symbol)
 
 
