@@ -19,15 +19,19 @@ def draw(local_df, symbol):
     local_df.index = pd.DatetimeIndex(local_df['start_time_format'])
     add_plot = [
         mpl.make_addplot(local_df['force_index_2_ema'], type='line', color='k', panel=1, ylabel='ema2'),
-        mpl.make_addplot(np.zeros(len(local_df.index)), type='line', color='k', panel=1),
+        # mpl.make_addplot(np.zeros(len(local_df.index)), type='line', color='k', panel=1, y_on_right=False),
         mpl.make_addplot(local_df['force_index_13_ema'], type='line', color='g', panel=2, ylabel='ema13'),
-        mpl.make_addplot(np.zeros(len(local_df.index)), type='line', color='k', panel=2)
+        # mpl.make_addplot(np.zeros(len(local_df.index)), type='line', color='k', panel=2, y_on_right=False)
     ]
     draw_one_day_with_mpl(local_df, add_plot, symbol, (13))
 
 
 if __name__ == '__main__':
-    symbols = ['BTCUSDT']
+    # symbols = ['WBTCUSDT']
+    symbols = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT', 'SOLUSDT', 'XRPUSDT', 'TONUSDT', 'DOGEUSDT', 'ADAUSDT',
+               'WBTCUSDT', 'AVAXUSDT', 'SHIBUSDT', 'DOTUSDT', 'BCHUSDT', 'LINKUSDT', 'LTCUSDT', 'NEARUSDT', 'MATICUSDT',
+               'UNIUSDT', 'PEPEUSDT', 'ICPUSDT', 'APTUSDT', 'WBETHUSDT', 'ETCUSDT', 'SUIUSDT', 'STXUSDT',
+               'FETUSDT', 'FILUSDT']
     for symbol in symbols:
         # 1、获取制定的K线信息
         result, one_day_df = get_latest_k_line(symbol, '1d', 120, int(datetime.datetime.now().timestamp() * 1000))
