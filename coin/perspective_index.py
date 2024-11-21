@@ -22,7 +22,7 @@ def draw(local_df, symbol):
         mpl.make_addplot(local_df['bull_power'], type='bar', color='#00FF00', panel=1),
         mpl.make_addplot(local_df['bear_power'], type='bar', color='#FF3030', panel=2)
     ]
-    draw_one_day_with_mpl(local_df, add_plot, symbol, (13))
+    draw_one_day_with_mpl(local_df, add_plot, symbol, (13), (1, 0.3, 0.3))
 
 
 if __name__ == '__main__':

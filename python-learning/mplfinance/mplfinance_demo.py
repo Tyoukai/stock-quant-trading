@@ -75,8 +75,9 @@ mpf.plot(df, type='candle', style='charles', mav=(5, 8, 13), volume=True)
 # df['up'] = df['high'] * 1.2
 # df['down'] = df['low'] * 0.8
 #
+# addplot标签中label用来设置图例
 # add_plot = [
-#     mpf.make_addplot(df['up'], type='line', color='k'),
+#     mpf.make_addplot(df['up'], type='line', color='k', label='up'),
 #     mpf.make_addplot(df['down'], type='line', color='r'),
 #     mpf.make_addplot(df['volume'], type='bar', color='b', panel=1),
 #     mpf.make_addplot(df['middle'], type='bar', color='k', panel=2)
