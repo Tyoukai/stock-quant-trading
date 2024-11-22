@@ -3,15 +3,15 @@ import cufflinks as cf
 import numpy as np
 
 # 1、基本用法
-df = cf.datagen.ohlc()
-df['volume'] = abs(df['low'] * 1000)
-mpf.plot(df, type='candle', style='charles', mav=(5, 8, 13), volume=True)
+# df = cf.datagen.ohlc()
+# df['volume'] = abs(df['low'] * 1000)
+# mpf.plot(df, type='candle', style='charles', mav=(5, 8, 13), volume=True)
 
 # 2、在主图上增加其他折线图
-# df = cf.datagen.ohlc()
-# df['middle'] = (df['high'] + df['low']) / 2.0
-# add_plot = mpf.make_addplot(data=df[['high', 'low']])
-# mpf.plot(df, type='candle', addplot=add_plot)
+df = cf.datagen.ohlc()
+df['middle'] = (df['high'] + df['low']) / 2.0
+add_plot = mpf.make_addplot(data=df[['high']])
+mpf.plot(df, type='candle', addplot=add_plot, update_width_config=dict(line_width=1))
 
 # 3、在主图上添加其他形式的图
 # df = cf.datagen.ohlc()
