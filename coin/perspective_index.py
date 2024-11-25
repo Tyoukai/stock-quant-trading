@@ -1,10 +1,8 @@
-import numpy as np
 from base_api import get_latest_k_line
 from base_api import draw_one_day_with_mpl
 from moving_average import ema
 import datetime
 import mplfinance as mpl
-import pandas as pd
 
 
 def calculate_perspective_index(local_df, cycle):
