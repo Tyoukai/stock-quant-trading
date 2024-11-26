@@ -3,6 +3,7 @@ from base_api import draw_one_day_with_mpl
 from moving_average import ema
 import datetime
 import mplfinance as mpl
+import pandas as pd
 
 
 def calculate_perspective_index(local_df, cycle):
@@ -16,6 +17,7 @@ def calculate_perspective_index(local_df, cycle):
 
 
 def draw(local_df, symbol):
+    local_df.index = pd.DatetimeIndex(local_df['start_time_format'])
     add_plot = [
         mpl.make_addplot(local_df['bull_power'], type='bar', color='#00FF00', panel=1),
         mpl.make_addplot(local_df['bear_power'], type='bar', color='#FF3030', panel=2)
@@ -27,7 +29,11 @@ if __name__ == '__main__':
     """
     透视指标
     """
-    symbols = ['BTCUSDT']
+    symbols = ['SUIUSDT']
+    # symbols = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT', 'SOLUSDT', 'XRPUSDT', 'TONUSDT', 'DOGEUSDT', 'ADAUSDT',
+    #            'WBTCUSDT', 'AVAXUSDT', 'SHIBUSDT', 'DOTUSDT', 'BCHUSDT', 'LINKUSDT', 'LTCUSDT', 'NEARUSDT',
+    #            'UNIUSDT', 'PEPEUSDT', 'ICPUSDT', 'APTUSDT', 'WBETHUSDT', 'ETCUSDT', 'SUIUSDT', 'STXUSDT',
+    #            'FETUSDT', 'FILUSDT']
     for symbol in symbols:
         # 1、获取制定的K线信息
         result, one_day_df = get_latest_k_line(symbol, '1d', 120, int(datetime.datetime.now().timestamp() * 1000))
