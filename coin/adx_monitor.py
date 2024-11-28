@@ -4,9 +4,11 @@ import time
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import pandas as pd
+import mplfinance as mpl
 
 from base_api import get_latest_k_line
 from base_api import draw_plot_day
+from base_api import draw_one_day_with_mpl
 from backtest.StockIndexCalculation import calculate_TR
 
 
@@ -64,6 +66,16 @@ def calculate_adx(df_local, n):
     return df_local
 
 
+def draw(local_df, local_symbol):
+    local_df.index = pd.DatetimeIndex(local_df['start_time_format'])
+    add_plot = [
+        mpl.make_addplot(local_df['di_plus_n'], type='line', color='g', label='di_plus_n', panel=1),
+        mpl.make_addplot(local_df['di_minus_n'], type='line', color='r', label='di_minus_n', panel=1),
+        mpl.make_addplot(local_df['adx'], type='line', color='k', label='adx', panel=1)
+    ]
+    draw_one_day_with_mpl(local_df, add_plot, local_symbol, (13), (1, 0.7))
+
+
 if __name__ == '__main__':
     # symbols = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT', 'SOLUSDT', 'XRPUSDT', 'TONUSDT', 'DOGEUSDT', 'ADAUSDT',
     #            'WBTCUSDT', 'AVAXUSDT', 'SHIBUSDT', 'DOTUSDT', 'BCHUSDT', 'LINKUSDT', 'LTCUSDT', 'NEARUSDT', 'MATICUSDT',
@@ -74,15 +86,16 @@ if __name__ == '__main__':
     cycle = 13
     for symbol in symbols:
         # 1、获取指定分钟k线图
-        result, fifteen_minute_df = get_latest_k_line(symbol, '1d', 120,
+        result, one_day_df = get_latest_k_line(symbol, '1d', 120,
                                                       int(datetime.datetime.now().timestamp() * 1000))
         if not result:
             continue
         # 2、计算TR
-        fifteen_minute_df = calculate_TR(fifteen_minute_df)
+        one_day_df = calculate_TR(one_day_df)
         # 3、计算DM+ DM-
-        fifteen_minute_df = calculate_dm(fifteen_minute_df)
+        one_day_df = calculate_dm(one_day_df)
         # 4、计算DI+ DI- DX ADX
-        fifteen_minute_df = calculate_adx(fifteen_minute_df, cycle)
+        one_day_df = calculate_adx(one_day_df, cycle)
         # 7、图形展示
-        draw_plot_day(fifteen_minute_df, ['di_plus_n', 'di_minus_n', 'adx'], symbol)
+        draw(one_day_df, symbol)
+        # draw_plot_day(one_day_df, ['di_plus_n', 'di_minus_n', 'adx'], symbol)
