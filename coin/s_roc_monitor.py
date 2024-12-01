@@ -28,7 +28,7 @@ if __name__ == '__main__':
     #            'WBTCUSDT', 'AVAXUSDT', 'SHIBUSDT', 'DOTUSDT', 'BCHUSDT', 'LINKUSDT', 'LTCUSDT', 'NEARUSDT', 'MATICUSDT',
     #            'UNIUSDT', 'PEPEUSDT', 'ICPUSDT', 'APTUSDT', 'WBETHUSDT', 'ETCUSDT', 'SUIUSDT', 'STXUSDT',
     #            'FETUSDT', 'FILUSDT']
-    symbols = ['BTCUSDT']
+    symbols = ['SUIUSDT']
     ema_cycle = 13
     roc_cycle = 7
     # 1、计算指定周期的EMA
