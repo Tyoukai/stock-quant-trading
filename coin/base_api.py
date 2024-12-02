@@ -125,6 +125,41 @@ def get_latest_k_line(symbol_local, interval_local, max_delta, end_time):
     return False, pd.DataFrame()
 
 
+def get_k_line_with_start_time(local_symbol, start_time_local, interval_local):
+    """
+    获取指定开始时间到当前时间的k线图
+    :param local_symbol:
+    :param start_time_local:
+    :param interval_local:
+    :return:
+    """
+    client = Spot(base_url='https://api4.binance.com')
+    end_time = datetime.datetime.now().timestamp()
+    try:
+        k_line = client.klines(symbol=local_symbol, interval=interval_local, startTime=start_time_local,
+                               endTime=end_time, limit=1000)
+        one_interval_df = pd.DataFrame(k_line, columns=['start_time', 'open', 'high', 'low', 'close', 'volume',
+                                                        'end_time', 'amount', 'num', '1', '2', '3'])
+        one_interval_df['open'] = one_interval_df['open'].astype(float)
+        one_interval_df['high'] = one_interval_df['high'].astype(float)
+        one_interval_df['low'] = one_interval_df['low'].astype(float)
+        one_interval_df['close'] = one_interval_df['close'].astype(float)
+        one_interval_df['volume'] = one_interval_df['volume'].astype(float)
+        one_interval_df['amount'] = one_interval_df['amount'].astype(float)
+        one_interval_df['num'] = one_interval_df['num'].astype(float)
+
+        one_interval_df['start_time'] = one_interval_df['start_time'] / 1000
+        start_time = datetime.datetime.fromtimestamp(int(one_interval_df['start_time'][0]))
+        start_time_str = datetime.datetime.strftime(start_time, '%Y%m%d')
+        dates_str_list = pd.date_range(start=start_time_str, periods=len(one_interval_df.index), freq='1w').strftime(
+            '%Y-%m-%d').tolist()
+        one_interval_df['start_time_format'] = dates_str_list
+
+        return True, one_interval_df
+    except BaseException:
+        return False, pd.DataFrame()
+
+
 def draw_plot_day(df_local, according_to_columns, symbol):
     """
     绘制日级别的通用图形
