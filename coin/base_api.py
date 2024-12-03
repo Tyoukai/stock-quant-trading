@@ -134,7 +134,7 @@ def get_k_line_with_start_time(local_symbol, start_time_local, interval_local):
     :return:
     """
     client = Spot(base_url='https://api4.binance.com')
-    end_time = datetime.datetime.now().timestamp()
+    end_time = int(datetime.datetime.now().timestamp() * 1000)
     try:
         k_line = client.klines(symbol=local_symbol, interval=interval_local, startTime=start_time_local,
                                endTime=end_time, limit=1000)
