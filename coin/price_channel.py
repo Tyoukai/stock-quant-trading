@@ -13,7 +13,7 @@ def show_chart(df_local, symbol_local):
         mpl.make_addplot(df_local['max_value'], type='line', color='g', label='up'),
         mpl.make_addplot(df_local['min_value'], type='line', color='r', label='low')
     ]
-    draw_one_day_with_mpl(df_local, add_plot, symbol_local, (13), (1, 0.3))
+    draw_one_day_with_mpl(df_local, add_plot, symbol_local, (13), None)
 
 
 def calculate_coefficient(if_loop, df_local, symbol_local, coefficient_local, ema_name):
@@ -53,7 +53,7 @@ if __name__ == '__main__':
     #            'WBTCUSDT', 'AVAXUSDT', 'SHIBUSDT', 'DOTUSDT', 'BCHUSDT', 'LINKUSDT', 'LTCUSDT', 'NEARUSDT', 'MATICUSDT',
     #            'UNIUSDT', 'PEPEUSDT', 'ICPUSDT', 'APTUSDT', 'WBETHUSDT', 'ETCUSDT', 'SUIUSDT', 'STXUSDT',
     #            'FETUSDT', 'FILUSDT']
-    symbols = ['SUIUSDT']
+    symbols = ['PEPEUSDT']
     # 2024-07-03 08:00:00
     start_time = 1719964800000
     for symbol in symbols:

@@ -204,6 +204,10 @@ def draw_one_day_with_mpl(local_df, add_plot, symbol, mav, panel_ratios):
     """
     my_color = mpl.make_marketcolors(up='#00FF00', down='#FF3030', inherit=True, volume='inherit')
     my_style = mpl.make_mpf_style(marketcolors=my_color, gridaxis='both', gridstyle='-.', y_on_right=False)
-    mpl.plot(local_df, type='candle', datetime_format='%Y-%m-%d', style=my_style, panel_ratios=panel_ratios,
-             mav=mav, addplot=add_plot, title=symbol, update_width_config=dict(line_width=0.5))
+    if panel_ratios is None:
+        mpl.plot(local_df, type='candle', datetime_format='%Y-%m-%d', style=my_style, mav=mav, addplot=add_plot,
+                 title=symbol, update_width_config=dict(line_width=0.5))
+    else:
+        mpl.plot(local_df, type='candle', datetime_format='%Y-%m-%d', style=my_style, panel_ratios=panel_ratios,
+                 mav=mav, addplot=add_plot, title=symbol, update_width_config=dict(line_width=0.5))
 
