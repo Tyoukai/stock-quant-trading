@@ -151,7 +151,7 @@ def get_k_line_with_start_time(local_symbol, start_time_local, interval_local):
         one_interval_df['start_time'] = one_interval_df['start_time'] / 1000
         start_time = datetime.datetime.fromtimestamp(int(one_interval_df['start_time'][0]))
         start_time_str = datetime.datetime.strftime(start_time, '%Y%m%d')
-        dates_str_list = pd.date_range(start=start_time_str, periods=len(one_interval_df.index), freq='1w').strftime(
+        dates_str_list = pd.date_range(start=start_time_str, periods=len(one_interval_df.index), freq='1d').strftime(
             '%Y-%m-%d').tolist()
         one_interval_df['start_time_format'] = dates_str_list
 
@@ -192,7 +192,7 @@ def draw_plot_day(df_local, according_to_columns, symbol):
     plt.show()
 
 
-def draw_one_day_with_mpl(local_df, add_plot, symbol, mav, panel_ratios):
+def draw_one_day_with_mpl(local_df, add_plot, symbol, mav, panel_ratios, show_volume=False):
     """
     通过mpl绘制k线图
     :param local_df:
@@ -200,14 +200,15 @@ def draw_one_day_with_mpl(local_df, add_plot, symbol, mav, panel_ratios):
     :param symbol: 符号
     :param mav: 所要显示的移动平均线周期，传入元组
     :param panel_ratios: 主图与附图的显示比例
+    :param show_volume:展示成交量
     :return:
     """
     my_color = mpl.make_marketcolors(up='#00FF00', down='#FF3030', inherit=True, volume='inherit')
     my_style = mpl.make_mpf_style(marketcolors=my_color, gridaxis='both', gridstyle='-.', y_on_right=False)
     if panel_ratios is None:
         mpl.plot(local_df, type='candle', datetime_format='%Y-%m-%d', style=my_style, mav=mav, addplot=add_plot,
-                 title=symbol, update_width_config=dict(line_width=0.5))
+                 title=symbol, update_width_config=dict(line_width=0.5), volume=show_volume)
     else:
         mpl.plot(local_df, type='candle', datetime_format='%Y-%m-%d', style=my_style, panel_ratios=panel_ratios,
-                 mav=mav, addplot=add_plot, title=symbol, update_width_config=dict(line_width=0.5))
+                 mav=mav, addplot=add_plot, title=symbol, update_width_config=dict(line_width=0.5), volume=show_volume)
 
