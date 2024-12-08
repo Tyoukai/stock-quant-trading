@@ -1,6 +1,5 @@
 import numpy as np
 from base_api import get_latest_k_line
-from base_api import draw_plot_day
 from base_api import draw_one_day_with_mpl
 import datetime
 import mplfinance as mpl
@@ -25,7 +24,7 @@ if __name__ == '__main__':
     """
     a/d指标
     """
-    symbols = ['SUIUSDT']
+    symbols = ['PEPEUSDT']
     for symbol in symbols:
         # 1、获取K线
         result, one_day_df = get_latest_k_line(symbol, '1d', 120, int(datetime.datetime.now().timestamp() * 1000))

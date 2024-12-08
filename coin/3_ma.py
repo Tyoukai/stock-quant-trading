@@ -24,7 +24,7 @@ if __name__ == '__main__':
     #            'WBTCUSDT', 'AVAXUSDT', 'SHIBUSDT', 'DOTUSDT', 'BCHUSDT', 'LINKUSDT', 'LTCUSDT', 'NEARUSDT',
     #            'UNIUSDT', 'PEPEUSDT', 'ICPUSDT', 'APTUSDT', 'WBETHUSDT', 'ETCUSDT', 'SUIUSDT', 'STXUSDT',
     #            'FETUSDT', 'FILUSDT']
-    symbols = ['BTCUSDT']
+    symbols = ['PEPEUSDT']
     for symbol in symbols:
         # 获取指定的k线信息
         result, one_day_df = get_latest_k_line(symbol, '1d', 240, int(datetime.datetime.now().timestamp() * 1000))
