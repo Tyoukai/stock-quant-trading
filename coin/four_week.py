@@ -7,10 +7,10 @@ def get_signal(local_df, local_symbol):
     before_high = local_df['high'].iloc[0: len(local_df.index) - 1]
     before_low = local_df['low'].iloc[0: len(local_df.index) - 1]
     if current_close >= before_high.max():
-        print(local_symbol + '做多，当前价格：' + current_close + '，之前最高价：' + before_high.max())
+        print(local_symbol + '做多，当前价格：' + str(current_close) + '，之前最高价：' + str(before_high.max()))
         return
     if current_close <= before_low.min():
-        print(local_symbol + '做空，当前价格：' + current_close + '，之前最低价：' + before_high.min())
+        print(local_symbol + '做空，当前价格：' + str(current_close) + '，之前最低价：' + str(before_high.min()))
         return
     print(local_symbol + '观望')
 
@@ -20,7 +20,7 @@ if __name__ == '__main__':
     四周交易法则：当前价格超过4周内最高价时，建立多头头寸，平仓空头，当价格跌破4周内最低价时，建立空头头寸，平仓多头。
     当然可以根据交易品种进行自定义，不一定是四周
     """
-    # symbols = ['BTCUSDT']
+    # symbols = ['LINKUSDT']
     symbols = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT', 'SOLUSDT', 'XRPUSDT', 'TONUSDT', 'DOGEUSDT', 'ADAUSDT',
                'AVAXUSDT', 'SHIBUSDT', 'DOTUSDT', 'BCHUSDT', 'LINKUSDT', 'LTCUSDT', 'NEARUSDT',
                'UNIUSDT', 'PEPEUSDT', 'ICPUSDT', 'APTUSDT', 'WBETHUSDT', 'ETCUSDT', 'SUIUSDT', 'STXUSDT',
