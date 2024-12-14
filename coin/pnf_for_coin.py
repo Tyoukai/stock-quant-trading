@@ -10,10 +10,13 @@ def draw(local_symbol, local_df):
         return
     if local_symbol == 'SOLUSDT':
         mpl.plot(local_df, type='pnf', pnf_params=dict(box_size=3, reversal=3))
+        return
+    if local_symbol == 'PEPEUSDT':
+        mpl.plot(local_df, type='pnf', pnf_params=dict(box_size=0.00000030, reversal=3))
 
 
 if __name__ == '__main__':
-    symbols = ['SOLUSDT']
+    symbols = ['PEPEUSDT']
     for symbol in symbols:
         # 获取k线信息
         result, one_day_df = get_latest_k_line(symbol, '1d', 120,
