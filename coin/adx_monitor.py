@@ -81,7 +81,7 @@ if __name__ == '__main__':
     #            'WBTCUSDT', 'AVAXUSDT', 'SHIBUSDT', 'DOTUSDT', 'BCHUSDT', 'LINKUSDT', 'LTCUSDT', 'NEARUSDT', 'MATICUSDT',
     #            'UNIUSDT', 'PEPEUSDT', 'ICPUSDT', 'APTUSDT', 'WBETHUSDT', 'ETCUSDT', 'SUIUSDT', 'STXUSDT',
     #            'FETUSDT', 'FILUSDT']
-    symbols = ['PEPEUSDT', 'APTUSDT', 'ETCUSDT', 'STXUSDT']
+    symbols = ['LTCUSDT', 'UNIUSDT']
     # 循环周期
     cycle = 13
     for symbol in symbols:

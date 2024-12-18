@@ -53,7 +53,7 @@ if __name__ == '__main__':
     #            'WBTCUSDT', 'AVAXUSDT', 'SHIBUSDT', 'DOTUSDT', 'BCHUSDT', 'LINKUSDT', 'LTCUSDT', 'NEARUSDT', 'MATICUSDT',
     #            'UNIUSDT', 'PEPEUSDT', 'ICPUSDT', 'APTUSDT', 'WBETHUSDT', 'ETCUSDT', 'SUIUSDT', 'STXUSDT',
     #            'FETUSDT', 'FILUSDT']
-    symbols = ['PEPEUSDT']
+    symbols = ['SUIUSDT']
     # 2024-07-03 08:00:00
     start_time = 1719964800000
     for symbol in symbols:
